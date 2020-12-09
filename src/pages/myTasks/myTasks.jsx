@@ -22,7 +22,7 @@ const MyTasks = () => {
         tabList={[
           { title: '我发布的任务' },
           { title: '我接受的任务' },
-          { title: '待接收私密任务', text: 2 },
+          { title: '待接收专属任务', text: 2 },
         ]}
         onClick={e => {
           setCurrent(e)
