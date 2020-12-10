@@ -7,7 +7,11 @@ import PurchasingTask from './purchasingTask/purchasingTask'
 
 const PurchasingTaskPool = () => {
 
-  const pool = new Array(10).fill(<PurchasingTask/>)
+  let taskCard = {
+    marginBottom: '2%'
+  }
+
+  const pool = new Array(10).fill(<View style={taskCard}><PurchasingTask/></View>)
 
   return (
     <View>
