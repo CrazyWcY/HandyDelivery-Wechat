@@ -5,7 +5,11 @@ export default {
     'pages/myTasks/myTasks',
     'pages/myInfo/myInfo',
     'pages/taskPools/purchasingTaskPool/purchasingTask/purchasingTaskInfo',
+    'pages/taskPools/deliveryTaskPool/deliveryTask/deliveryTaskInfo',
     'pages/taskPools/newTask/newTask',
+    'pages/myTasks/myPosted/myPostedItem',
+    'pages/myTasks/myAccepted/delivery/myAcceptedDeliveryItem',
+    'pages/myTasks/myAccepted/purchasing/myAcceptedPurchasingItem',
     'pages/test/test'
   ],
   window: {
@@ -31,5 +35,17 @@ export default {
     ],
     "position": "bottom",  //tabBar的位置 top 或 bottom
     "custom": false  //自定义tabBar时为true
+  },
+  plugins: {
+    "chooseLocation": {
+      "version": "1.0.5",
+      "provider": "wx76a9a06e5b4e693e"
+    }
+  },
+
+  permission: {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序定位"
+    }
   }
 }

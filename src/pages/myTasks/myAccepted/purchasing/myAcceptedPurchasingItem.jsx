@@ -1,9 +1,9 @@
-import { View } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
 import { AtList, AtListItem, AtButton, AtCard } from "taro-ui"
 
-const PurchasingTaskInfo = () => {
-
+const MyAcceptedPurchasingItem = () => {
   return (
     <View>
       <View>
@@ -28,11 +28,9 @@ const PurchasingTaskInfo = () => {
         >
           求复旦纪念章。
         </AtCard>
-        <AtButton type='primary'>接受任务</AtButton>
       </View>
     </View>
-
   )
 }
 
-export default PurchasingTaskInfo
+export default MyAcceptedPurchasingItem

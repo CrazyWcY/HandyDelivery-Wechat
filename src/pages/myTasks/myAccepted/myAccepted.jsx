@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { AtSegmentedControl } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
+import MyAcceptedPurchasing from './purchasing/myAcceptedPurchasing'
+import MyAcceptedDelivery from './delivery/myAcceptedDelivery'
 
 const MyAccepted = () => {
 
   const [current, setCurrent] = useState(0)
 
   const contents = [
+    <MyAcceptedPurchasing />,
+    <MyAcceptedDelivery />
   ]
 
   return (
@@ -16,6 +20,9 @@ const MyAccepted = () => {
         onClick={e => setCurrent(e)}
         current={current}
       />
+      {
+        contents[current]
+      }
     </View>
   )
 }
