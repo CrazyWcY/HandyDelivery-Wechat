@@ -6,6 +6,7 @@ import DeliveryTaskPool from './deliveryTaskPool/deliveryTaskPool'
 import PurchasingTaskPool from './purchasingTaskPool/purchasingTaskPool'
 
 const TaskPools = () => {
+  
   const [current, setCurrent] = useState(0)
 
   const contents = [
@@ -28,6 +29,7 @@ const TaskPools = () => {
         ]}
         onClick={e => setCurrent(e)}
         current={current}
+        swipeable={true}
       />
       {
         contents[current]

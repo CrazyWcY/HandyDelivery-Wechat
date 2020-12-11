@@ -11,7 +11,7 @@ const PurchasingTaskPool = () => {
     marginBottom: '2%'
   }
 
-  const pool = new Array(10).fill(<View style={taskCard}><PurchasingTask/></View>)
+  const pool = new Array(2).fill(<View style={taskCard}><PurchasingTask/></View>)
 
   return (
     <View>

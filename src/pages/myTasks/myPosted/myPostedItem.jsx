@@ -191,12 +191,14 @@ const PurchasingInfo = () => {
 
   return (
     <View>
-      <View style={CSS.userBar} className='at-row'>
-        <View style={CSS.avatar} className='at-row'>
-          <AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>
-          <View style={{ marginLeft: '5%' }}>
-            <View style={CSS.userName}>用户1</View>
-            <View style={CSS.userInfo}>info</View>
+      <View className='at-row at-row__justify--center'>
+        <View style={CSS.userBar} className='at-row'>
+          <View style={CSS.avatar} className='at-row'>
+            <AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>
+            <View style={{ marginLeft: '5%' }}>
+              <View style={CSS.userName}>用户1</View>
+              <View style={CSS.userInfo}>info</View>
+            </View>
           </View>
         </View>
       </View>
@@ -218,7 +220,12 @@ const PurchasingInfo = () => {
           <View style={CSS.infoItem}>自行配送</View>
         </View>
       </View>
-      <Map longitude={121.513646} latitude={31.341285} markers={markers} />
+      <View className='at-row at-row__justify--center'>
+        <View className='at-row' style={{ padding: '0 5% 0 5%' }}>
+          <Map longitude={121.513646} latitude={31.341285} markers={markers} />
+        </View>
+      </View>
+
     </View>
   )
 }
@@ -359,12 +366,14 @@ const DeliveryInfo = () => {
 
   return (
     <View>
-      <View style={CSS.userBar} className='at-row'>
-        <View style={CSS.avatar} className='at-row'>
-          <AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>
-          <View style={{ marginLeft: '5%' }}>
-            <View style={CSS.userName}>配送者</View>
-            <View style={CSS.userInfo}>info</View>
+      <View className='at-row at-row__justify--center'>
+        <View style={CSS.userBar} className='at-row'>
+          <View style={CSS.avatar} className='at-row'>
+            <AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>
+            <View style={{ marginLeft: '5%' }}>
+              <View style={CSS.userName}>配送者</View>
+              <View style={CSS.userInfo}>info</View>
+            </View>
           </View>
         </View>
       </View>
@@ -400,9 +409,14 @@ const DeliveryInfo = () => {
         }>更新坐标</AtButton>
       </View>
       {
-        polyLines ? <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} /> : null
+        polyLines ?
+          <View className='at-row at-row__justify--center'>
+            <View className='at-row' style={{ padding: '0 5% 0 5%' }}>
+              <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} />
+            </View>
+          </View> : null
       }
-    </View>
+    </View >
   )
 }
 
@@ -411,67 +425,16 @@ const MyPostedItem = () => {
   const CSS = {
     head: {
       backgroundColor: '#64AB99',
+      height: '60px'
     },
     title: {
       color: 'white',
       fontSize: '20px',
-      paddingTop: '3%',
-      fontWeight: 'bold'
-    },
-    userBar: {
-      width: '90%',
-      backgroundColor: 'white',
-      marginTop: '5%',
-      marginBottom: '5%',
-      boxShadow: '3px 2px 16px 1px grey'
-    },
-    userName: {
-      fontSize: '15px',
-      fontWeight: 'bold'
-    },
-    userInfo: {
-      fontSize: '10px',
-      paddingTop: '15%'
-    },
-    avatar: {
-      paddingTop: '3%',
-      paddingBottom: '3%',
-      paddingLeft: '3%',
-      paddingRight: '3%'
-    },
-    infoCard: {
-      backgroundColor: '#DEF0F2',
-      margin: '3% 3%',
-      borderRadius: '20px'
-    },
-    infoList: {
-      padding: '3% 3%',
-      width: '90%'
-    },
-    infoTitle: {
       fontWeight: 'bold',
-      fontSize: '12px'
+      marginLeft: '3%'
     },
-    infoItem: {
-      color: 'grey',
-      fontSize: '12px'
-    },
-    detailsArea: {
-      margin: '5% 5% 15% 5%'
-    },
-    timeArea: {
-      margin: '5% 5%'
-    },
-    timeLine: {
-      fontSize: '12px',
-      color: 'grey',
-      marginTop: '3%'
-    },
-    divider: {
-      height: '5px',
-      width: '80%',
-      margin: 'auto',
-      borderBottom: 'solid 1px grey'
+    tag: {
+      marginLeft: '5%'
     }
   }
 
@@ -490,23 +453,25 @@ const MyPostedItem = () => {
   return (
     <ScrollView>
       <View style={CSS.head}>
-        <View className='at-row at-row__align--center'>
-          <View className='at-col'>
+        <View className='at-row at-row__align--center' style={{ paddingTop: '5%' }}>
+          <View style={CSS.tag}>
             <AtTag type='primary' circle>配送中</AtTag>
           </View>
-          <View style={CSS.title} className='at-col'>任务标题</View>
+          <View style={CSS.title}>任务标题</View>
         </View>
       </View>
-      <AtSegmentedControl
-        values={['任务信息', '采购信息', '配送信息']}
-        onClick={v => { setCurrent(v) }}
-        current={current}
-      />
+      <View className='at-row at-row__justify--center' style={{ marginTop: '3%', marginBottom: '3%' }}>
+        <View style={{ width: '95%' }}>
+          <AtSegmentedControl
+            values={['任务信息', '采购信息', '配送信息']}
+            onClick={v => { handleTabChange(v) }}
+            current={current}
+          />
+        </View>
+      </View>
       {
         pages[current]
       }
-
-      <AtButton type='primary'>取消任务</AtButton>
     </ScrollView>
 
   )

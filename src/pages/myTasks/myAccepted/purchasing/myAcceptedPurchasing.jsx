@@ -7,7 +7,7 @@ const MyAcceptedPurchasing = () => {
 
   const handleClick = () => {
     Taro.navigateTo({
-      url: '/pages/taskPools/deliveryTaskPool/deliveryTask/deliveryTaskInfo'
+      url: '/pages/myTasks/myAccepted/purchasing/myAcceptedPurchasingItem'
     })
   }
 

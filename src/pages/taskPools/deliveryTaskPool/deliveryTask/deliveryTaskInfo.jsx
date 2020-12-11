@@ -6,7 +6,7 @@ import { RouteMap } from '../../../../components/map'
 const DeliveryTaskInfo = () => {
   const CSS = {
     head: {
-      backgroundColor: '#7bbfea',
+      backgroundColor: '#64AB99',
     },
     title: {
       color: 'white',
@@ -37,7 +37,7 @@ const DeliveryTaskInfo = () => {
       paddingRight: '3%'
     },
     infoCard: {
-      backgroundColor: '#c4e3f7',
+      backgroundColor: '#DEF0F2',
       margin: '3% 3%',
       borderRadius: '20px'
     },
@@ -137,7 +137,11 @@ const DeliveryTaskInfo = () => {
             <View style={CSS.infoItem}>2020-12-30</View>
           </View>
         </View>
-        <AtButton type='secondary' onClick={handleMap}>查看路线</AtButton>
+        <View className='at-row at-row__justify--center'>
+          <View className='at-row'>
+            <AtButton type='secondary' onClick={handleMap}>查看路线规划</AtButton>
+          </View>
+        </View>
         <View style={CSS.detailsArea}>
           <View>请保证货品完好。</View>
         </View>
@@ -149,10 +153,10 @@ const DeliveryTaskInfo = () => {
         </View>
       </View>
 
-      <View style={{position: 'fixed', bottom: '30px', left: '42%'}}>
-      <AtFab>
-        <Text className='at-fab__icon at-icon at-icon-check'></Text>
-      </AtFab>
+      <View style={{ position: 'fixed', bottom: '30px', left: '42%' }}>
+        <AtFab>
+          <Text className='at-fab__icon at-icon at-icon-check'></Text>
+        </AtFab>
       </View>
     </ScrollView>
 
