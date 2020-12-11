@@ -5,7 +5,7 @@ import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider } from "taro-u
 const PurchasingTaskInfo = () => {
   const CSS = {
     head: {
-      backgroundColor: '#26c59e',
+      backgroundColor: '#64AB99',
     },
     title: {
       color: 'white',
@@ -18,6 +18,7 @@ const PurchasingTaskInfo = () => {
       backgroundColor: 'white',
       marginTop: '5%',
       marginBottom: '5%',
+      boxShadow: '3px 2px 16px 1px grey'
     },
     userName: {
       fontSize: '15px',
@@ -34,7 +35,7 @@ const PurchasingTaskInfo = () => {
       paddingRight: '3%'
     },
     infoCard: {
-      backgroundColor: '#9cf8d8',
+      backgroundColor: '#DEF0F2',
       margin: '3% 3%',
       borderRadius: '20px'
     },
