@@ -14,23 +14,29 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black'
+    navigationBarBackgroundColor: '#74BDAC',
+    navigationBarTitleText: '随手递',
+    navigationBarTextStyle: 'white'
   },
   tabBar: {
     "list": [
       {
         "pagePath": 'pages/taskPools/taskPools', //此处路径要写不带 ‘/’的
         "text": "任务池",            //tab名字
+        "iconPath": 'icons/nav-list.png',
+        "selectedIconPath": 'icons/nav-list.png'
       },
       {
         "pagePath": 'pages/myTasks/myTasks', //此处路径要写不带 ‘/’的
         "text": "我的任务",            //tab名字
+        "iconPath": 'icons/calculator.png',
+        "selectedIconPath": 'icons/calculator.png'
       },
       {
         "pagePath": 'pages/myInfo/myInfo', //此处路径要写不带 ‘/’的
         "text": "我的",            //tab名字
+        "iconPath": 'icons/user center.png',
+        "selectedIconPath": 'icons/user center.png'
       },
     ],
     "position": "bottom",  //tabBar的位置 top 或 bottom

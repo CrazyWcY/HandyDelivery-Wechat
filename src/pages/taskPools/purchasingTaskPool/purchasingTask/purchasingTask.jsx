@@ -2,7 +2,7 @@ import { View } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
 import { AtCard, AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
-import { TaskCard } from '../../../../components/TaskCard'
+import { PurchasingTaskCard } from '../../../../components/TaskCard'
 
 const PurchasingTask = () => {
 
@@ -25,7 +25,7 @@ const PurchasingTask = () => {
 
   return (
     <View onClick={handleClick} style={{paddingBottom: '1%'}}>
-      <TaskCard></TaskCard>
+      <PurchasingTaskCard></PurchasingTaskCard>
     </View>
   )
 }

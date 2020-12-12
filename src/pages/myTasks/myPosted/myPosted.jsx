@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtList, AtListItem, AtButton, AtCard } from "taro-ui"
+import { MyPostedPurchasingTaskCard } from '../../../components/TaskCard'
 
 const MyPosted = () => {
+
+  let contents = new Array(5).fill(<View style={{marginBottom: '2%'}}><MyPostedPurchasingTaskCard /></View>)
 
   const handleClick = () => {
     Taro.navigateTo({
@@ -12,16 +15,10 @@ const MyPosted = () => {
   }
 
   return (
-    <View>
-      <AtCard
-        note='小Tips'
-        extra='额外信息'
-        title='我发布的任务'
-        thumb='http://www.logoquan.com/upload/list/20180421/logoquan15259400209.PNG'
-        onClick={handleClick}
-      >
-        我发布的一个任务
-    </AtCard>
+    <View onClick={handleClick}>
+      {
+        contents
+      }
     </View>
   )
 }

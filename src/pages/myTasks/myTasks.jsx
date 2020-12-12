@@ -18,6 +18,7 @@ const MyTasks = () => {
 
   return (
     <View>
+      <View style={{fontWeight: 'bold', marginBottom: '3%'}}>
       <AtTabBar
         tabList={[
           { title: '我发布的任务' },
@@ -29,6 +30,7 @@ const MyTasks = () => {
         }}
         current={current}
       />
+      </View>
       {
         contents[current]
       }

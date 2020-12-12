@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { TaskCard } from '../../components/TaskCard'
+import { PurchasingTaskCard } from '../../components/TaskCard'
 
 const MyInfo = () => {
 
   return(
     <View>
-      <TaskCard></TaskCard>
+      <PurchasingTaskCard></PurchasingTaskCard>
     </View>
   )
 }

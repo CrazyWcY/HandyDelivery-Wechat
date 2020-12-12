@@ -6,13 +6,14 @@ import { RouteMap } from '../../../../components/map'
 const DeliveryTaskInfo = () => {
   const CSS = {
     head: {
-      backgroundColor: '#64AB99',
+      backgroundColor: '#64AB99'
     },
     title: {
       color: 'white',
       fontSize: '20px',
       paddingTop: '3%',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      paddingBottom: '3%'
     },
     userBar: {
       width: '90%',
@@ -97,7 +98,7 @@ const DeliveryTaskInfo = () => {
     <ScrollView>
       <View style={CSS.head}>
         <View style={CSS.title} className='at-row at-row__justify--center'>任务标题</View>
-        <View className='at-row at-row__justify--center'>
+        <View className='at-row at-row__justify--center' style={{paddingBottom: '3%'}}>
           <View style={CSS.userBar} className='at-row'>
             <View style={CSS.avatar} className='at-row'>
               <AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>

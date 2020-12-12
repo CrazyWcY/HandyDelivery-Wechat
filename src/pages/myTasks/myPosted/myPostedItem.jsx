@@ -221,7 +221,7 @@ const PurchasingInfo = () => {
         </View>
       </View>
       <View className='at-row at-row__justify--center'>
-        <View className='at-row' style={{ padding: '0 5% 0 5%' }}>
+        <View className='at-col' style={{ padding: '0 5% 0 5%' }}>
           <Map longitude={121.513646} latitude={31.341285} markers={markers} />
         </View>
       </View>
@@ -411,7 +411,7 @@ const DeliveryInfo = () => {
       {
         polyLines ?
           <View className='at-row at-row__justify--center'>
-            <View className='at-row' style={{ padding: '0 5% 0 5%' }}>
+            <View className='at-col' style={{ padding: '0 5% 0 5%' }}>
               <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} />
             </View>
           </View> : null
