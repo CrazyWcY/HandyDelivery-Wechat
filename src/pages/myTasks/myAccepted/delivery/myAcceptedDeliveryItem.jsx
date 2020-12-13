@@ -143,11 +143,11 @@ const MyAcceptedDeliveryItem = () => {
                 </View>
                 <View className='at-row at-row__justify--between' style={CSS.infoList}>
                   <View style={CSS.infoTitle}>寄送地</View>
-                  <View style={CSS.infoItem}>{task.p_send_location}</View>
+                  <View style={CSS.infoItem}>{task.p_send_location.name}</View>
                 </View>
                 <View className='at-row at-row__justify--between' style={CSS.infoList}>
                   <View style={CSS.infoTitle}>取件地址</View>
-                  <View style={CSS.infoItem}>{task.p_destination}</View>
+                  <View style={CSS.infoItem}>{task.p_destination.name}</View>
                 </View>
                 <View className='at-row at-row__justify--between' style={CSS.infoList}>
                   <View style={CSS.infoTitle}>期望交付日期</View>

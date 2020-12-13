@@ -44,7 +44,7 @@ const PurchasingTaskCard = (props) => {
           </View>
           <View className='at-row' style={CSS.itemLine}>
             <View className='at-icon at-icon-map-pin at-col at-col-1 at-col--auto' style={{ paddingTop: '1%' }}></View>
-            <View className='at-col' style={{ marginLeft: '3%', fontSize: '13px' }}>{task.d_destination}</View>
+            <View className='at-col' style={{ marginLeft: '3%', fontSize: '13px' }}>{task.d_destination.name}</View>
           </View>
           <View className='at-row' style={CSS.itemLine}>
             <View className='at-icon at-icon-credit-card at-col at-col-1 at-col--auto' style={{ paddingTop: '1%' }}></View>
@@ -112,11 +112,11 @@ const DeliveryTaskCard = (props) => {
           </View>
           <View className='at-row' style={CSS.itemLine}>
             <View className='at-icon at-icon-map-pin at-col at-col-1 at-col--auto' style={{ paddingTop: '1%' }}></View>
-            <View className='at-col' style={{ marginLeft: '3%', fontSize: '13px' }}>{task.p_send_location}</View>
+            <View className='at-col' style={{ marginLeft: '3%', fontSize: '13px' }}>{task.p_send_location.name}</View>
           </View>
           <View className='at-row' style={CSS.itemLine}>
             <View className='at-icon at-icon-home at-col at-col-1 at-col--auto' style={{ paddingTop: '1%' }}></View>
-            <View className='at-col' style={{ marginLeft: '3%', fontSize: '13px' }}>{task.d_destination}</View>
+            <View className='at-col' style={{ marginLeft: '3%', fontSize: '13px' }}>{task.d_destination.name}</View>
           </View>
           <View className='at-row' style={CSS.itemLine}>
             <View className='at-icon at-icon-credit-card at-col at-col-1 at-col--auto' style={{ paddingTop: '1%' }}></View>
@@ -166,7 +166,7 @@ const MyPostedPurchasingTaskCard = (props) => {
         <View className='at-col at-col-1 at-col--auto'>
           <View className='at-icon at-icon-map-pin'></View>
         </View>
-        <View className='at-col'>{task.d_destination}</View>
+        <View className='at-col'>{task.d_destination.name}</View>
       </View>
     </AtCard>
   )
@@ -193,7 +193,7 @@ const MyAcceptedPurchasingTaskCard = (props) => {
         <View className='at-col at-col-1 at-col--auto'>
           <View className='at-icon at-icon-map-pin'></View>
         </View>
-        <View className='at-col'>{task.p_destination}</View>
+        <View className='at-col'>{task.p_destination.name}</View>
       </View>
     </AtCard>
   )
@@ -220,13 +220,13 @@ const MyAcceptedDeliveryTaskCard = (props) => {
         <View className='at-col at-col-1 at-col--auto'>
           <View className='at-icon at-icon-map-pin'></View>
         </View>
-        <View className='at-col'>{task.p_send_location}</View>
+        <View className='at-col'>{task.p_send_location.name}</View>
       </View>
       <View className='at-row at-row__align--center'>
         <View className='at-col at-col-1 at-col--auto'>
           <View className='at-icon at-icon-map-pin'></View>
         </View>
-        <View className='at-col'>{task.d_destination}</View>
+        <View className='at-col'>{task.d_destination.name}</View>
       </View>
     </AtCard>
   )

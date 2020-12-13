@@ -102,20 +102,20 @@ const DeliveryTaskInfo = () => {
     setCurrent(v)
   }
 
-  const handleMap = () => {
-    const start = {
+  const handleMap = (start, end) => {
+    const start_place = {
       name: '上海交通大学（闵行校区）',
       latitude: '31.031863',
       longitude: '121.443219'
     }
 
-    const end = {
+    const end_place = {
       name: '复旦大学（江湾新校区）',
       latitude: '31.341285',
       longitude: '121.513646'
     }
 
-    const MAP = new RouteMap(start, end)
+    const MAP = new RouteMap(start_place, end_place)
     MAP.showRoutePlan()
   }
 
@@ -155,11 +155,11 @@ const DeliveryTaskInfo = () => {
                 </View>
                 <View className='at-row at-row__justify--between' style={CSS.infoList}>
                   <View style={CSS.infoTitle}>寄送地</View>
-                  <View style={CSS.infoItem}>{task.p_send_location}</View>
+                  <View style={CSS.infoItem}>{task.p_send_location.name}</View>
                 </View>
                 <View className='at-row at-row__justify--between' style={CSS.infoList}>
                   <View style={CSS.infoTitle}>取件地址</View>
-                  <View style={CSS.infoItem}>{task.d_destination}</View>
+                  <View style={CSS.infoItem}>{task.d_destination.name}</View>
                 </View>
                 <View className='at-row at-row__justify--between' style={CSS.infoList}>
                   <View style={CSS.infoTitle}>期望交付日期</View>
@@ -168,7 +168,7 @@ const DeliveryTaskInfo = () => {
               </View>
               <View className='at-row at-row__justify--center'>
                 <View className='at-row'>
-                  <AtButton type='secondary' onClick={handleMap}>查看路线规划</AtButton>
+                  <AtButton type='secondary' onClick={() => handleMap(task.p_send_location.name, task.d_destination.name)}>查看路线规划</AtButton>
                 </View>
               </View>
               <View style={CSS.detailsArea}>

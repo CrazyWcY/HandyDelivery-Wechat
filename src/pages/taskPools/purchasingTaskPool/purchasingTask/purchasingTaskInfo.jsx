@@ -124,7 +124,7 @@ const PurchasingTaskInfo = () => {
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>期望采购地点</View>
-                <View style={CSS.infoItem}>{task.p_destination}</View>
+                <View style={CSS.infoItem}>{task.p_destination.name}</View>
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>预计薪酬</View>
@@ -136,7 +136,7 @@ const PurchasingTaskInfo = () => {
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>取件地址</View>
-                <View style={CSS.infoItem}>{task.d_destination}</View>
+                <View style={CSS.infoItem}>{task.d_destination.name}</View>
               </View>
             </View>
             <View style={CSS.detailsArea}>

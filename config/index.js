@@ -9,16 +9,7 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: [
-    ['@tarojs/plugin-mock', {
-      mocks: {
-        '/api/user/1': {
-          name: 'judy',
-          desc: 'Mental guy'
-        },
-      }
-    }],
-  ],
+  plugins: [],
   defineConstants: {
   },
   copy: {

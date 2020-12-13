@@ -90,7 +90,7 @@ const UnreceivedInfo = (props) => {
         </View>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>期望采购地点</View>
-          <View style={CSS.infoItem}>{task.p_destination}</View>
+          <View style={CSS.infoItem}>{task.p_destination.name}</View>
         </View>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>预计薪酬</View>
@@ -102,7 +102,7 @@ const UnreceivedInfo = (props) => {
         </View>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>取件地址</View>
-          <View style={CSS.infoItem}>{task.d_destination}</View>
+          <View style={CSS.infoItem}>{task.d_destination.name}</View>
         </View>
       </View>
       <View style={CSS.detailsArea}>
@@ -243,7 +243,7 @@ const PurchasingInfo = (props) => {
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>寄件地点</View>
-                <View style={CSS.infoItem}>{task.p_send_location}</View>
+                <View style={CSS.infoItem}>{task.p_send_location.name}</View>
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>寄件信息</View>
@@ -418,11 +418,11 @@ const DeliveryInfo = (props) => {
             <View style={CSS.infoCard}>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>取件地点</View>
-                <View style={CSS.infoItem}>{task.p_send_location}</View>
+                <View style={CSS.infoItem}>{task.p_send_location.name}</View>
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>目的地</View>
-                <View style={CSS.infoItem}>{task.d_destination}</View>
+                <View style={CSS.infoItem}>{task.d_destination.name}</View>
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>配送状态</View>
