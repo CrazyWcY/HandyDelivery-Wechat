@@ -10,7 +10,10 @@ export default {
     'pages/myTasks/myPosted/myPostedItem',
     'pages/myTasks/myAccepted/delivery/myAcceptedDeliveryItem',
     'pages/myTasks/myAccepted/purchasing/myAcceptedPurchasingItem',
-    'pages/test/test'
+    'pages/test/test',
+    'pages/message/message',
+    "pages/personalInfo/personalInfo",
+    "pages/chat/chat",
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -25,6 +28,10 @@ export default {
         "text": "任务池",            //tab名字
         "iconPath": 'icons/nav-list.png',
         "selectedIconPath": 'icons/nav-list.png'
+      },
+      {
+        "pagePath": 'pages/message/message',
+        "text": "消息",
       },
       {
         "pagePath": 'pages/myTasks/myTasks', //此处路径要写不带 ‘/’的

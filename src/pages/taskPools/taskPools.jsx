@@ -6,9 +6,7 @@ import DeliveryTaskPool from './deliveryTaskPool/deliveryTaskPool'
 import PurchasingTaskPool from './purchasingTaskPool/purchasingTaskPool'
 
 const TaskPools = () => {
-
   const [current, setCurrent] = useState(0)
-
   const contents = [
     <PurchasingTaskPool />,
     <DeliveryTaskPool />
@@ -19,7 +17,6 @@ const TaskPools = () => {
       url: '/pages/taskPools/newTask/newTask'
     })
   }
-
   return (
     <View>
       <View style={{ fontWeight: 'bold' }}>
