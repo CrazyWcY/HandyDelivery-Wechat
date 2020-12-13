@@ -18,18 +18,18 @@ const MyTasks = () => {
 
   return (
     <View>
-      <View style={{fontWeight: 'bold', marginBottom: '3%'}}>
-      <AtTabBar
-        tabList={[
-          { title: '我发布的任务' },
-          { title: '我接受的任务' },
-          { title: '待接收专属任务', text: 2 },
-        ]}
-        onClick={e => {
-          setCurrent(e)
-        }}
-        current={current}
-      />
+      <View style={{ fontWeight: 'bold', marginBottom: '3%' }}>
+        <AtTabBar
+          tabList={[
+            { title: '我发布的任务' },
+            { title: '我接受的任务' },
+            { title: '待接收专属任务', text: 2 },
+          ]}
+          onClick={e => {
+            setCurrent(e)
+          }}
+          current={current}
+        />
       </View>
       {
         contents[current]
