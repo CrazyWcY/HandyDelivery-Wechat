@@ -7,7 +7,7 @@ const MyInfo = () => {
 
   return(
     <View>
-      <PurchasingTaskCard></PurchasingTaskCard>
+      MyInfo
     </View>
   )
 }

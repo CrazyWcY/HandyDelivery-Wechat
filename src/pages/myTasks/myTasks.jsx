@@ -22,8 +22,7 @@ const MyTasks = () => {
         <AtTabBar
           tabList={[
             { title: '我发布的任务' },
-            { title: '我接受的任务' },
-            { title: '待接收专属任务', text: 2 },
+            { title: '我接受的任务' }
           ]}
           onClick={e => {
             setCurrent(e)

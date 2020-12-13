@@ -6,18 +6,32 @@ import { MyAcceptedDeliveryTaskCard } from '../../../../components/TaskCard'
 
 const MyAcceptedDelivery = () => {
 
-  const contents = new Array(5).fill(<View style={{marginBottom: '2%'}}><MyAcceptedDeliveryTaskCard /></View>)
+  const [tasks, setTasks] = useState([])
 
-  const handleClick = () => {
+  useEffect(() => {
+    wx.request({
+      url: 'http://127.0.0.1:5000/getAcceptedDeliveryTask?id=root',
+      method: 'get',
+      success: function(res) {
+        console.log(res)
+        setTasks(res.data.data)
+      },
+      fail: function(res) {
+        console.log('error')
+      }
+    })
+  }, [])
+
+  const handleClick = (id) => {
     Taro.navigateTo({
-      url: '/pages/myTasks/myAccepted/delivery/myAcceptedDeliveryItem'
+      url: '/pages/myTasks/myAccepted/delivery/myAcceptedDeliveryItem?id=' + id
     })
   }
 
   return (
-    <View onClick={handleClick} style={{marginTop: '2%'}}>
-       {
-        contents
+    <View style={{marginTop: '2%'}}>
+      {
+        tasks.map(task => <View onClick={() => handleClick(task.id)} style={{marginBottom: '2%'}}><MyAcceptedDeliveryTaskCard task={task} /></View>)
       }
     </View>
   )

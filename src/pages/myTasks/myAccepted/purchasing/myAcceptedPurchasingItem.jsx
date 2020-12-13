@@ -1,6 +1,7 @@
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, ScrollView, Image } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
 import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider } from "taro-ui"
+import { getCurrentInstance } from '@tarojs/taro'
 
 const MyAcceptedPurchasingItem = () => {
   const CSS = {
@@ -67,65 +68,99 @@ const MyAcceptedPurchasingItem = () => {
       width: '80%',
       margin: 'auto',
       borderBottom: 'solid 1px grey'
+    },
+    imageLine: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: '1%'
     }
   }
 
-  const handleTabChange = v => {
-    setCurrent(v)
-  }
+  const [task, setTask] = useState(0)
+
+  useEffect(() => {
+    const id = getCurrentInstance().router.params.id
+    wx.request({
+      url: 'http://127.0.0.1:5000/getTask?id=' + id,
+      method: 'get',
+      success: function (res) {
+        console.log(res)
+        setTask(res.data.data)
+      },
+      fail: function (res) {
+        console.log('error')
+      }
+    })
+  }, [])
 
   return (
     <ScrollView>
-      <View style={CSS.head}>
-        <View style={CSS.title} className='at-row at-row__justify--center'>任务标题</View>
-        <View className='at-row at-row__justify--center'>
-          <View style={CSS.userBar} className='at-row'>
-            <View style={CSS.avatar} className='at-row'>
-              <AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>
-              <View style={{ marginLeft: '5%' }}>
-                <View style={CSS.userName}>用户1</View>
-                <View style={CSS.userInfo}>info</View>
+      {
+        task ?
+          <View>
+            <View style={CSS.head}>
+              <View style={CSS.title} className='at-row at-row__justify--center'>{task.title}</View>
+              <View className='at-row at-row__justify--center'>
+                <View style={CSS.userBar} className='at-row'>
+                  <View style={CSS.avatar} className='at-row'>
+                    <AtAvatar circle image={task.author.avatar}></AtAvatar>
+                    <View style={{ marginLeft: '5%' }}>
+                      <View style={CSS.userName}>{task.author.name}</View>
+                      <View style={CSS.userInfo}>{task.author.signature}</View>
+                    </View>
+                  </View>
+                </View>
               </View>
             </View>
+            <View>
+              <View style={CSS.infoCard}>
+                <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                  <View style={CSS.infoTitle}>货品名称</View>
+                  <View style={CSS.infoItem}>{task.good}</View>
+                </View>
+                <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                  <View style={CSS.infoTitle}>期望采购地点</View>
+                  <View style={CSS.infoItem}>{task.p_destination}</View>
+                </View>
+                <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                  <View style={CSS.infoTitle}>预计薪酬</View>
+                  <View style={CSS.infoItem}>RMB {task.money}</View>
+                </View>
+                <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                  <View style={CSS.infoTitle}>期望交付日期</View>
+                  <View style={CSS.infoItem}>{task.deadline}</View>
+                </View>
+                <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                  <View style={CSS.infoTitle}>取件地址</View>
+                  <View style={CSS.infoItem}>{task.d_destination}</View>
+                </View>
+              </View>
+              <View>
+                {
+                  task.good_pictures.map(item => (
+                    <View style={CSS.imageLine}>
+                      <Image
+                        style='width: 320px; height: 180 px; background: #fff;'
+                        src={item}
+                      />
+                    </View>
+                  ))
+                }
+              </View>
+              <View style={CSS.detailsArea}>
+                <View>{task.details}</View>
+              </View>
+              <View style={CSS.divider}>
+              </View>
+              <View style={CSS.timeArea}>
+                <View style={CSS.timeLine}>发布于 {task.time}</View>
+              </View>
+            </View>
+            <AtButton type='primary'>确认完成采购</AtButton>
           </View>
-        </View>
-      </View>
-      <View>
-        <View style={CSS.infoCard}>
-          <View className='at-row at-row__justify--between' style={CSS.infoList}>
-            <View style={CSS.infoTitle}>货品名称</View>
-            <View style={CSS.infoItem}>复旦大学纪念章</View>
-          </View>
-          <View className='at-row at-row__justify--between' style={CSS.infoList}>
-            <View style={CSS.infoTitle}>期望采购地点</View>
-            <View style={CSS.infoItem}>复旦大学</View>
-          </View>
-          <View className='at-row at-row__justify--between' style={CSS.infoList}>
-            <View style={CSS.infoTitle}>预计薪酬</View>
-            <View style={CSS.infoItem}>RMB 35</View>
-          </View>
-          <View className='at-row at-row__justify--between' style={CSS.infoList}>
-            <View style={CSS.infoTitle}>期望交付日期</View>
-            <View style={CSS.infoItem}>2020-12-30</View>
-          </View>
-          <View className='at-row at-row__justify--between' style={CSS.infoList}>
-            <View style={CSS.infoTitle}>取件地址</View>
-            <View style={CSS.infoItem}>上海交通大学（闵行）</View>
-          </View>
-        </View>
-        <View style={CSS.detailsArea}>
-          <View>求复旦纪念章。</View>
-        </View>
-        <View style={CSS.divider}>
-        </View>
-        <View style={CSS.timeArea}>
-          <View style={CSS.timeLine}>发布于 2020-12-10 21:15</View>
-          <View style={CSS.timeLine}>任务失效时间： 2020-12-30 23:59</View>
-        </View>
-      </View>
-
-      <AtButton type='primary'>确认完成采购</AtButton>
-      
+          : null
+      }
     </ScrollView>
 
   )

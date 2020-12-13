@@ -4,7 +4,7 @@ import { AtCard, AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
 import { PurchasingTaskCard } from '../../../../components/TaskCard'
 
-const PurchasingTask = () => {
+const PurchasingTask = (props) => {
 
   let cardLine = {
     fontSize: '12px',
@@ -16,16 +16,15 @@ const PurchasingTask = () => {
     paddingTop: '1px'
   }
 
-  const handleClick = () => {
-    console.log('test')
+  const handleClick = (id) => {
     Taro.navigateTo({
-      url: '/pages/taskPools/purchasingTaskPool/purchasingTask/purchasingTaskInfo'
+      url: '/pages/taskPools/purchasingTaskPool/purchasingTask/purchasingTaskInfo?id=' + id
     })
   }
 
   return (
-    <View onClick={handleClick} style={{paddingBottom: '1%'}}>
-      <PurchasingTaskCard></PurchasingTaskCard>
+    <View onClick={() => handleClick(props.task.id)} style={{paddingBottom: '1%'}}>
+      <PurchasingTaskCard task={props.task}></PurchasingTaskCard>
     </View>
   )
 }

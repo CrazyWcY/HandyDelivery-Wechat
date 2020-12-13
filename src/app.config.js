@@ -30,14 +30,16 @@ export default {
         "selectedIconPath": 'icons/nav-list.png'
       },
       {
-        "pagePath": 'pages/message/message',
-        "text": "消息",
-      },
-      {
         "pagePath": 'pages/myTasks/myTasks', //此处路径要写不带 ‘/’的
         "text": "我的任务",            //tab名字
         "iconPath": 'icons/calculator.png',
         "selectedIconPath": 'icons/calculator.png'
+      },
+      {
+        "pagePath": 'pages/message/message',
+        "text": "消息",
+        "iconPath": 'icons/Customer management.png',
+        "selectedIconPath": 'icons/Customer management.png'
       },
       {
         "pagePath": 'pages/myInfo/myInfo', //此处路径要写不带 ‘/’的

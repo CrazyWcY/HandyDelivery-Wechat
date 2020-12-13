@@ -1,8 +1,13 @@
-import { View, Text, ScrollView, Map } from '@tarojs/components'
+import { View, Text, ScrollView, Map, Image } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
 import { AtFab, AtTag, AtButton, AtAvatar, AtSegmentedControl } from "taro-ui"
+import { taskStatus } from '../../../service/status'
+import { getCurrentInstance } from '@tarojs/taro'
 
-const UnreceivedInfo = () => {
+const UnreceivedInfo = (props) => {
+
+  const task = props.task
+
   const CSS = {
     head: {
       backgroundColor: '#7bbfea',
@@ -68,6 +73,12 @@ const UnreceivedInfo = () => {
       width: '80%',
       margin: 'auto',
       borderBottom: 'solid 1px grey'
+    },
+    imageLine: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: '1%'
     }
   }
   return (
@@ -75,39 +86,53 @@ const UnreceivedInfo = () => {
       <View style={CSS.infoCard}>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>货品名称</View>
-          <View style={CSS.infoItem}>复旦大学纪念章</View>
+          <View style={CSS.infoItem}>{task.good}</View>
         </View>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>期望采购地点</View>
-          <View style={CSS.infoItem}>复旦大学</View>
+          <View style={CSS.infoItem}>{task.p_destination}</View>
         </View>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>预计薪酬</View>
-          <View style={CSS.infoItem}>RMB 35</View>
+          <View style={CSS.infoItem}>{task.money}</View>
         </View>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>期望交付日期</View>
-          <View style={CSS.infoItem}>2020-12-30</View>
+          <View style={CSS.infoItem}>{task.deadline}</View>
         </View>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>取件地址</View>
-          <View style={CSS.infoItem}>上海交通大学（闵行）</View>
+          <View style={CSS.infoItem}>{task.d_destination}</View>
         </View>
       </View>
       <View style={CSS.detailsArea}>
-        <View>求复旦纪念章。</View>
+        <View>{task.details}</View>
+      </View>
+      <View>
+        {
+          task.good_pictures.map(item => (
+            <View style={CSS.imageLine}>
+              <Image
+                style='width: 320px; height: 180 px; background: #fff;'
+                src={item}
+              />
+            </View>
+          ))
+        }
       </View>
       <View style={CSS.divider}>
       </View>
       <View style={CSS.timeArea}>
-        <View style={CSS.timeLine}>发布于 2020-12-10 21:15</View>
-        <View style={CSS.timeLine}>任务失效时间： 2020-12-30 23:59</View>
+        <View style={CSS.timeLine}>发布于 {task.time}</View>
       </View>
     </View>
   )
 }
 
-const PurchasingInfo = () => {
+const PurchasingInfo = (props) => {
+
+  const task = props.task
+
   const CSS = {
     head: {
       backgroundColor: '#7bbfea',
@@ -191,46 +216,58 @@ const PurchasingInfo = () => {
 
   return (
     <View>
-      <View className='at-row at-row__justify--center'>
-        <View style={CSS.userBar} className='at-row'>
-          <View style={CSS.avatar} className='at-row'>
-            <AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>
-            <View style={{ marginLeft: '5%' }}>
-              <View style={CSS.userName}>用户1</View>
-              <View style={CSS.userInfo}>info</View>
+      {
+        task.status < 1 ?
+          <View>待接受，暂无配送信息。</View>
+          :
+          <View>
+            <View className='at-row at-row__justify--center'>
+              <View style={CSS.userBar} className='at-row'>
+                <View style={CSS.avatar} className='at-row'>
+                  <AtAvatar circle image={task.puchaser.avatar}></AtAvatar>
+                  <View style={{ marginLeft: '5%' }}>
+                    <View style={CSS.userName}>{task.puchaser.name}</View>
+                    <View style={CSS.userInfo}>{task.puchaser.signature}</View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={CSS.infoCard}>
+              <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                <View style={CSS.infoTitle}>采购完成时间</View>
+                <View style={CSS.infoItem}>{task.p_finish_time}</View>
+              </View>
+              <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                <View style={CSS.infoTitle}>实际采购地点</View>
+                <View style={CSS.infoItem}>{task.p_location}</View>
+              </View>
+              <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                <View style={CSS.infoTitle}>寄件地点</View>
+                <View style={CSS.infoItem}>{task.p_send_location}</View>
+              </View>
+              <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                <View style={CSS.infoTitle}>寄件信息</View>
+                <View style={CSS.infoItem}>{task.p_details}</View>
+              </View>
+              <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                <View style={CSS.infoTitle}>采购费用</View>
+                <View style={CSS.infoItem}>{task.p_money}</View>
+              </View>
+            </View>
+            <View className='at-row at-row__justify--center'>
+              <View className='at-col' style={{ padding: '0 5% 0 5%' }}>
+                <Map longitude={121.513646} latitude={31.341285} markers={markers} />
+              </View>
             </View>
           </View>
-        </View>
-      </View>
-      <View style={CSS.infoCard}>
-        <View className='at-row at-row__justify--between' style={CSS.infoList}>
-          <View style={CSS.infoTitle}>任务接受时间</View>
-          <View style={CSS.infoItem}>2020-12-11 11:03</View>
-        </View>
-        <View className='at-row at-row__justify--between' style={CSS.infoList}>
-          <View style={CSS.infoTitle}>采购完成时间</View>
-          <View style={CSS.infoItem}>2020-12-15 9:00</View>
-        </View>
-        <View className='at-row at-row__justify--between' style={CSS.infoList}>
-          <View style={CSS.infoTitle}>实际采购地点</View>
-          <View style={CSS.infoItem}>复旦大学</View>
-        </View>
-        <View className='at-row at-row__justify--between' style={CSS.infoList}>
-          <View style={CSS.infoTitle}>配送模式</View>
-          <View style={CSS.infoItem}>自行配送</View>
-        </View>
-      </View>
-      <View className='at-row at-row__justify--center'>
-        <View className='at-col' style={{ padding: '0 5% 0 5%' }}>
-          <Map longitude={121.513646} latitude={31.341285} markers={markers} />
-        </View>
-      </View>
-
+      }
     </View>
   )
 }
 
-const DeliveryInfo = () => {
+const DeliveryInfo = (props) => {
+
+  const task = props.task
 
   const [polyLines, setPolyLines] = useState(null)
   const [currLoc, setCurrLoc] = useState([{
@@ -360,68 +397,68 @@ const DeliveryInfo = () => {
     }
   ]
 
-  const handleAPI = () => {
-
-  }
-
   return (
     <View>
-      <View className='at-row at-row__justify--center'>
-        <View style={CSS.userBar} className='at-row'>
-          <View style={CSS.avatar} className='at-row'>
-            <AtAvatar circle image='https://jdc.jd.com/img/200'></AtAvatar>
-            <View style={{ marginLeft: '5%' }}>
-              <View style={CSS.userName}>配送者</View>
-              <View style={CSS.userInfo}>info</View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View style={CSS.infoCard}>
-        <View className='at-row at-row__justify--between' style={CSS.infoList}>
-          <View style={CSS.infoTitle}>任务接受时间</View>
-          <View style={CSS.infoItem}>2020-12-11 11:03</View>
-        </View>
-        <View className='at-row at-row__justify--between' style={CSS.infoList}>
-          <View style={CSS.infoTitle}>取件地点</View>
-          <View style={CSS.infoItem}>2020-12-15 9:00</View>
-        </View>
-        <View className='at-row at-row__justify--between' style={CSS.infoList}>
-          <View style={CSS.infoTitle}>目的地</View>
-          <View style={CSS.infoItem}>复旦大学</View>
-        </View>
-        <View className='at-row at-row__justify--between' style={CSS.infoList}>
-          <View style={CSS.infoTitle}>配送状态</View>
-          <View style={CSS.infoItem}>配送中</View>
-        </View>
-        <AtButton onClick={
-          () => {
-            setCurrLoc([
-              {
-                id: 0,
-                latitude: currLoc[0].latitude - 0.00001,
-                longitude: currLoc[0].longitude - 0.00001,
-                width: 10,
-                height: 10
-              }
-            ])
-          }
-        }>更新坐标</AtButton>
-      </View>
       {
-        polyLines ?
-          <View className='at-row at-row__justify--center'>
-            <View className='at-col' style={{ padding: '0 5% 0 5%' }}>
-              <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} />
+        task.status < 2 ?
+          <View> 暂无配送信息</View>
+          :
+          <View>
+            <View className='at-row at-row__justify--center'>
+              <View style={CSS.userBar} className='at-row'>
+                <View style={CSS.avatar} className='at-row'>
+                  <AtAvatar circle image={task.deliver.avatar}></AtAvatar>
+                  <View style={{ marginLeft: '5%' }}>
+                    <View style={CSS.userName}>{task.deliver.name}</View>
+                    <View style={CSS.userInfo}>{task.deliver.signature}</View>
+                  </View>
+                </View>
+              </View>
             </View>
-          </View> : null
+            <View style={CSS.infoCard}>
+              <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                <View style={CSS.infoTitle}>取件地点</View>
+                <View style={CSS.infoItem}>{task.p_send_location}</View>
+              </View>
+              <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                <View style={CSS.infoTitle}>目的地</View>
+                <View style={CSS.infoItem}>{task.d_destination}</View>
+              </View>
+              <View className='at-row at-row__justify--between' style={CSS.infoList}>
+                <View style={CSS.infoTitle}>配送状态</View>
+                <View style={CSS.infoItem}>配送中</View>
+              </View>
+              <AtButton onClick={
+                () => {
+                  setCurrLoc([
+                    {
+                      id: 0,
+                      latitude: currLoc[0].latitude - 0.00001,
+                      longitude: currLoc[0].longitude - 0.00001,
+                      width: 10,
+                      height: 10
+                    }
+                  ])
+                }
+              }>更新坐标</AtButton>
+            </View>
+            {
+              polyLines ?
+                <View className='at-row at-row__justify--center'>
+                  <View className='at-col' style={{ padding: '0 5% 0 5%' }}>
+                    <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} />
+                  </View>
+                </View> : null
+            }</View>
       }
+
     </View >
   )
 }
 
 
 const MyPostedItem = () => {
+
   const CSS = {
     head: {
       backgroundColor: '#64AB99',
@@ -439,39 +476,62 @@ const MyPostedItem = () => {
   }
 
   const [current, setCurrent] = useState(0)
+  const [task, setTask] = useState(0)
+
+  useEffect(() => {
+    const id = getCurrentInstance().router.params.id
+    wx.request({
+      url: 'http://127.0.0.1:5000/getTask?id=' + id,
+      method: 'get',
+      success: function (res) {
+        console.log(res)
+        setTask(res.data.data)
+      },
+      fail: function (res) {
+        console.log('error')
+      }
+    })
+  }, [])
 
   const handleTabChange = v => {
     setCurrent(v)
   }
 
   const pages = [
-    <UnreceivedInfo />,
-    <PurchasingInfo />,
-    <DeliveryInfo />
+    <UnreceivedInfo task={task} />,
+    <PurchasingInfo task={task} />,
+    <DeliveryInfo task={task} />
   ]
 
   return (
     <ScrollView>
-      <View style={CSS.head}>
-        <View className='at-row at-row__align--center' style={{ paddingTop: '5%' }}>
-          <View style={CSS.tag}>
-            <AtTag type='primary' circle>配送中</AtTag>
-          </View>
-          <View style={CSS.title}>任务标题</View>
-        </View>
-      </View>
-      <View className='at-row at-row__justify--center' style={{ marginTop: '3%', marginBottom: '3%' }}>
-        <View style={{ width: '95%' }}>
-          <AtSegmentedControl
-            values={['任务信息', '采购信息', '配送信息']}
-            onClick={v => { handleTabChange(v) }}
-            current={current}
-          />
-        </View>
-      </View>
       {
-        pages[current]
+        task ?
+          <View>
+            <View style={CSS.head}>
+              <View className='at-row at-row__align--center' style={{ paddingTop: '5%' }}>
+                <View style={CSS.tag}>
+                  <AtTag type='primary' circle>{taskStatus[task.status]}</AtTag>
+                </View>
+                <View style={CSS.title}>{task.p_title}</View>
+              </View>
+            </View>
+            <View className='at-row at-row__justify--center' style={{ marginTop: '3%', marginBottom: '3%' }}>
+              <View style={{ width: '95%' }}>
+                <AtSegmentedControl
+                  values={['任务信息', '采购信息', '配送信息']}
+                  onClick={v => { handleTabChange(v) }}
+                  current={current}
+                />
+              </View>
+            </View>
+            {
+              pages[current]
+            }
+          </View> : null
       }
+
+
     </ScrollView>
 
   )

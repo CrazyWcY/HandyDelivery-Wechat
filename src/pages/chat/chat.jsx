@@ -3,9 +3,6 @@ import Taro from '@tarojs/taro'
 import { ScrollView, View, Image, Text } from '@tarojs/components'
 import { AtAvatar, AtInput } from 'taro-ui'
 import './chat.scss'
-import {
-  Ionicons
-} from 'taro-icons'
 
 
 const Dialog = (props) => {

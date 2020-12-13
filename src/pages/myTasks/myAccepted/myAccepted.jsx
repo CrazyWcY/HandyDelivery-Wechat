@@ -16,7 +16,7 @@ const MyAccepted = () => {
   return (
     <View>
       <View className='at-row at-row__justify--center'>
-        <View className='at-col' style={{ margin: '0 2% 0 2%' }}>
+        <View className='at-col' style={{ margin: '0 2% 2% 2%' }}>
           <AtSegmentedControl
             values={['采购任务', '配送任务']}
             onClick={e => setCurrent(e)}

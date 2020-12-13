@@ -6,18 +6,32 @@ import { MyPostedPurchasingTaskCard } from '../../../components/TaskCard'
 
 const MyPosted = () => {
 
-  let contents = new Array(5).fill(<View style={{marginBottom: '2%'}}><MyPostedPurchasingTaskCard /></View>)
+  const [tasks, setTasks] = useState([])
 
-  const handleClick = () => {
+  useEffect(() => {
+    wx.request({
+      url: 'http://127.0.0.1:5000/getPostedTask?id=root',
+      method: 'get',
+      success: function (res) {
+        console.log(res)
+        setTasks(res.data.data)
+      },
+      fail: function (res) {
+        console.log('error')
+      }
+    })
+  }, [])
+
+  const handleClick = (id) => {
     Taro.navigateTo({
-      url: '/pages/myTasks/myPosted/myPostedItem'
+      url: '/pages/myTasks/myPosted/myPostedItem?id=' + id
     })
   }
 
   return (
-    <View onClick={handleClick}>
+    <View>
       {
-        contents
+        tasks.map(task => <View onClick={() => handleClick(task.id)} style={{marginBottom: '2%'}}><MyPostedPurchasingTaskCard task={task} /></View>)
       }
     </View>
   )
