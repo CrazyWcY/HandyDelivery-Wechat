@@ -1,6 +1,6 @@
-import { View, Text, ScrollView, Map, Image } from '@tarojs/components'
+import { View, Text, ScrollView, Map, Image, Button } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
-import { AtFab, AtTag, AtButton, AtAvatar, AtSegmentedControl } from "taro-ui"
+import { AtFab, AtTag, AtButton, AtAvatar, AtSegmentedControl, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtInput, AtRate } from "taro-ui"
 import { taskStatus } from '../../../service/status'
 import { getCurrentInstance } from '@tarojs/taro'
 
@@ -124,6 +124,13 @@ const UnreceivedInfo = (props) => {
 
   return (
     <View>
+      {
+        task.status === 5 ?
+          <View>
+            <View>总体评价</View>
+            <AtRate value={Number(task.appraise)} />
+          </View> : null
+      }
       <View style={CSS.infoCard}>
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>货品名称</View>
@@ -169,6 +176,7 @@ const UnreceivedInfo = (props) => {
       <View style={CSS.timeArea}>
         <View style={CSS.timeLine}>发布于 {task.time}</View>
       </View>
+      
     </View>
   )
 }
@@ -292,6 +300,13 @@ const PurchasingInfo = (props) => {
           <View>待接受，暂无配送信息。</View>
           :
           <View>
+            {
+              task.status === 5 ?
+                <View>
+                  <View>评价</View>
+                  <AtRate value={Number(task.p_appraise)} />
+                </View> : null
+            }
             <View className='at-row at-row__justify--center'>
               <View style={CSS.userBar} className='at-row'>
                 <View style={CSS.avatar} className='at-row'>
@@ -336,6 +351,7 @@ const PurchasingInfo = (props) => {
             <View style={CSS.timeArea}>
               <View style={CSS.timeLine}>发布于 {task.time}</View>
             </View>
+            
           </View>
       }
     </View>
@@ -481,6 +497,13 @@ const DeliveryInfo = (props) => {
           <View> 暂无配送信息</View>
           :
           <View>
+            {
+              task.status === 5 ?
+                <View>
+                  <View>评价</View>
+                  <AtRate value={Number(task.d_appraise)} />
+                </View> : null
+            }
             <View className='at-row at-row__justify--center'>
               <View style={CSS.userBar} className='at-row'>
                 <View style={CSS.avatar} className='at-row'>
@@ -503,7 +526,7 @@ const DeliveryInfo = (props) => {
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>配送状态</View>
-                <View style={CSS.infoItem}>配送中</View>
+                <View style={CSS.infoItem}>{Number(task.status) < 3 ? '配送中' : '已收货'}</View>
               </View>
               {
                 polyLines ?
@@ -511,19 +534,21 @@ const DeliveryInfo = (props) => {
                     <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
                   </View> : null
               }
-              <AtButton onClick={
-                () => {
-                  setCurrLoc([
-                    {
-                      id: 0,
-                      latitude: currLoc[0].latitude - 0.00001,
-                      longitude: currLoc[0].longitude - 0.00001,
-                      width: 10,
-                      height: 10
-                    }
-                  ])
-                }
-              }>更新坐标</AtButton>
+              {
+                Number(task.status) < 3 ? <AtButton onClick={
+                  () => {
+                    setCurrLoc([
+                      {
+                        id: 0,
+                        latitude: currLoc[0].latitude - 0.00001,
+                        longitude: currLoc[0].longitude - 0.00001,
+                        width: 10,
+                        height: 10
+                      }
+                    ])
+                  }
+                }>更新坐标</AtButton> : null
+              }
             </View>
           </View>
       }
@@ -532,6 +557,47 @@ const DeliveryInfo = (props) => {
   )
 }
 
+const PayModalContent = (props) => {
+
+  const task = props.task
+
+  return (
+    <View>
+      <View>采购金额：{task.p_money}元</View>
+      <View>配送金额：{task.d_money}元</View>
+      <View>总计：{Number(task.p_money) + Number(task.d_money)}元</View>
+      <AtInput
+        name='password'
+        title='支付密码'
+        type='password'
+        placeholder='请输入6位支付密码'
+      />
+    </View>
+  )
+}
+
+const StarModalContent = (props) => {
+
+  const task = props.task
+
+  const [star1, setStar1] = useState(0)
+  const [star2, setStar2] = useState(0)
+
+  return (
+    <View>
+      <View>评价采购者：</View>
+      <AtRate
+        value={star1}
+        onChange={value => { setStar1(value) }}
+      />
+      <View>评价配送者：</View>
+      <AtRate
+        value={star2}
+        onChange={value => { setStar2(value) }}
+      />
+    </View>
+  )
+}
 
 const MyPostedItem = () => {
 
@@ -553,6 +619,7 @@ const MyPostedItem = () => {
 
   const [current, setCurrent] = useState(0)
   const [task, setTask] = useState(0)
+  const [modalVisiable, setModalVisiable] = useState(false)
 
   useEffect(() => {
     const id = getCurrentInstance().router.params.id
@@ -604,12 +671,35 @@ const MyPostedItem = () => {
             {
               pages[current]
             }
+            <AtModal isOpened={modalVisiable}>
+              <AtModalHeader>{Number(task.status) === 3 ? '支付' : '评价'}</AtModalHeader>
+              <AtModalContent>
+                {
+                  Number(task.status) === 3 ? <PayModalContent task={task} /> : <StarModalContent task={task} />
+                }
+
+              </AtModalContent>
+              <AtModalAction> <Button onClick={() => setModalVisiable(false)}>取消</Button> <Button onClick={() => setModalVisiable(false)}>确定</Button> </AtModalAction>
+            </AtModal>
+            {
+              Number(task.status) === 3 ?
+                <View style={{ position: 'fixed', bottom: '30px', left: '42%' }} onClick={() => setModalVisiable(true)}>
+                  <AtFab>
+                    <Text className='at-fab__icon at-icon at-icon-credit-card'></Text>
+                  </AtFab>
+                </View> : null
+            }
+            {
+              Number(task.status) === 4 ?
+                <View style={{ position: 'fixed', bottom: '30px', left: '42%' }} onClick={() => setModalVisiable(true)}>
+                  <AtFab>
+                    <Text className='at-fab__icon at-icon at-icon-star'></Text>
+                  </AtFab>
+                </View> : null
+            }
           </View> : null
       }
-
-
     </ScrollView>
-
   )
 }
 

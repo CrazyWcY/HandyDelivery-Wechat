@@ -204,17 +204,17 @@ const DeliveryTaskInfo = () => {
                 <View>{task.p_details}</View>
               </View>
               <View>
-              {
-                task.good_pictures.map(item => (
-                <View style={CSS.imageLine}>
-                  <Image
-                    style='width: 320px; height: 180 px; background: #fff;'
-                    src={item}
-                  />
-                </View>
-                ))
-              }
-            </View>
+                {
+                  task.good_pictures.map(item => (
+                    <View style={CSS.imageLine}>
+                      <Image
+                        style='width: 320px; height: 180 px; background: #fff;'
+                        src={item}
+                      />
+                    </View>
+                  ))
+                }
+              </View>
               <View style={CSS.divider}>
               </View>
               <View style={CSS.timeArea}>
