@@ -22,23 +22,26 @@ const BoxCard = (props) => {
   )
 }
 
-const MessageCard = () => {
+const MessageCard = (props) => {
+
+  const user = props.user
+
   let [data, setData] = useState({
-    name: '王博yyds',
-    avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-    text: '王博yyds，大家都知道',
+    name: user.name,
+    avatar: user.avatar,
+    text: user.signature,
     time: '下午3:24',
     hint: 2,
   })
 
-  const goToChat = () => {
+  const goToChat = (id) => {
     Taro.navigateTo({
-      url: '/pages/chat/chat'
+      url: '/pages/chat/chat?id=' + id
     })
   }
 
   return (
-    <View className="chatCard" onClick={goToChat}>
+    <View className="chatCard" onClick={() => goToChat(user.id)}>
       <BoxCard data={data}></BoxCard>
     </View>
   )

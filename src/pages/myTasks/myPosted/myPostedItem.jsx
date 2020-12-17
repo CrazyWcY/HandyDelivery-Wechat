@@ -81,6 +81,47 @@ const UnreceivedInfo = (props) => {
       marginBottom: '1%'
     }
   }
+
+  const getMarkers = task => {
+    const markers = [
+      {
+        id: 0,
+        longitude: task.p_destination.longitude,
+        latitude: task.p_destination.latitude,
+        width: 20,
+        height: 20,
+        label: {
+          content: '期望采购地点:' + task.p_destination.name,
+          color: '#22ac38',
+          fontSize: 14,
+          bgColor: "#fff",
+          borderRadius: 10,
+          borderColor: "#22ac38",
+          borderWidth: 1,
+          padding: 3
+        }
+      },
+      {
+        id: 1,
+        longitude: task.d_destination.longitude,
+        latitude: task.d_destination.latitude,
+        width: 20,
+        height: 20,
+        label: {
+          content: '取件地点:' + task.d_destination.name,
+          color: '#22ac38',
+          fontSize: 14,
+          bgColor: "#fff",
+          borderRadius: 10,
+          borderColor: "#22ac38",
+          borderWidth: 1,
+          padding: 3
+        }
+      },
+    ]
+    return markers
+  }
+
   return (
     <View>
       <View style={CSS.infoCard}>
@@ -103,6 +144,9 @@ const UnreceivedInfo = (props) => {
         <View className='at-row at-row__justify--between' style={CSS.infoList}>
           <View style={CSS.infoTitle}>取件地址</View>
           <View style={CSS.infoItem}>{task.d_destination.name}</View>
+        </View>
+        <View className='at-row at-row__justify--between'>
+          <Map longitude={Number(task.p_destination.longitude)} latitude={Number(task.p_destination.latitude)} markers={getMarkers(task)} scale={16} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
         </View>
       </View>
       <View style={CSS.detailsArea}>
@@ -201,18 +245,45 @@ const PurchasingInfo = (props) => {
     }
   }
 
-  const markers = [
-    {
-      id: 0,
-      latitude: 31.341285,
-      longitude: 121.513646,
-      width: 10,
-      height: 10,
-      anchor: { x: .5, y: 0.8 },
-      title: '创意图',
-      callout: { content: '创意图地标建筑' }
-    }
-  ]
+  const getMarkers = task => {
+    const markers = [
+      {
+        id: 0,
+        longitude: task.p_send_location.longitude,
+        latitude: task.p_send_location.latitude,
+        width: 20,
+        height: 20,
+        label: {
+          content: '寄件地:' + task.p_send_location.name,
+          color: '#22ac38',
+          fontSize: 14,
+          bgColor: "#fff",
+          borderRadius: 10,
+          borderColor: "#22ac38",
+          borderWidth: 1,
+          padding: 3
+        }
+      },
+      {
+        id: 1,
+        longitude: task.d_destination.longitude,
+        latitude: task.d_destination.latitude,
+        width: 20,
+        height: 20,
+        label: {
+          content: '取件地点:' + task.d_destination.name,
+          color: '#22ac38',
+          fontSize: 14,
+          bgColor: "#fff",
+          borderRadius: 10,
+          borderColor: "#22ac38",
+          borderWidth: 1,
+          padding: 3
+        }
+      },
+    ]
+    return markers
+  }
 
   return (
     <View>
@@ -253,11 +324,17 @@ const PurchasingInfo = (props) => {
                 <View style={CSS.infoTitle}>采购费用</View>
                 <View style={CSS.infoItem}>{task.p_money}</View>
               </View>
-            </View>
-            <View className='at-row at-row__justify--center'>
-              <View className='at-col' style={{ padding: '0 5% 0 5%' }}>
-                <Map longitude={121.513646} latitude={31.341285} markers={markers} />
+              <View className='at-row at-row__justify--between'>
+                <Map longitude={Number(task.p_send_location.longitude)} latitude={Number(task.p_send_location.latitude)} markers={getMarkers(task)} scale={16} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
               </View>
+            </View>
+            <View style={CSS.detailsArea}>
+              <View>{task.p_details}</View>
+            </View>
+            <View style={CSS.divider}>
+            </View>
+            <View style={CSS.timeArea}>
+              <View style={CSS.timeLine}>发布于 {task.time}</View>
             </View>
           </View>
       }
@@ -428,6 +505,12 @@ const DeliveryInfo = (props) => {
                 <View style={CSS.infoTitle}>配送状态</View>
                 <View style={CSS.infoItem}>配送中</View>
               </View>
+              {
+                polyLines ?
+                  <View className='at-row at-row__justify--between'>
+                    <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
+                  </View> : null
+              }
               <AtButton onClick={
                 () => {
                   setCurrLoc([
@@ -442,14 +525,7 @@ const DeliveryInfo = (props) => {
                 }
               }>更新坐标</AtButton>
             </View>
-            {
-              polyLines ?
-                <View className='at-row at-row__justify--center'>
-                  <View className='at-col' style={{ padding: '0 5% 0 5%' }}>
-                    <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} />
-                  </View>
-                </View> : null
-            }</View>
+          </View>
       }
 
     </View >

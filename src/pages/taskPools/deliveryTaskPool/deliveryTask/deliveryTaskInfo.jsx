@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from '@tarojs/components'
+import { View, Text, ScrollView, Image, Map } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
 import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider } from "taro-ui"
 import { RouteMap } from '../../../../components/map'
@@ -103,20 +103,48 @@ const DeliveryTaskInfo = () => {
   }
 
   const handleMap = (start, end) => {
-    const start_place = {
-      name: '上海交通大学（闵行校区）',
-      latitude: '31.031863',
-      longitude: '121.443219'
-    }
-
-    const end_place = {
-      name: '复旦大学（江湾新校区）',
-      latitude: '31.341285',
-      longitude: '121.513646'
-    }
-
-    const MAP = new RouteMap(start_place, end_place)
+    const MAP = new RouteMap(start, end)
     MAP.showRoutePlan()
+  }
+
+  const getMarkers = task => {
+    const markers = [
+      {
+        id: 0,
+        longitude: task.p_send_location.longitude,
+        latitude: task.p_send_location.latitude,
+        width: 20,
+        height: 20,
+        label: {
+          content: '寄件地:' + task.p_send_location.name,
+          color: '#22ac38',
+          fontSize: 14,
+          bgColor: "#fff",
+          borderRadius: 10,
+          borderColor: "#22ac38",
+          borderWidth: 1,
+          padding: 3
+        }
+      },
+      {
+        id: 1,
+        longitude: task.d_destination.longitude,
+        latitude: task.d_destination.latitude,
+        width: 20,
+        height: 20,
+        label: {
+          content: '取件地点:' + task.d_destination.name,
+          color: '#22ac38',
+          fontSize: 14,
+          bgColor: "#fff",
+          borderRadius: 10,
+          borderColor: "#22ac38",
+          borderWidth: 1,
+          padding: 3
+        }
+      },
+    ]
+    return markers
   }
 
   return (
@@ -165,10 +193,11 @@ const DeliveryTaskInfo = () => {
                   <View style={CSS.infoTitle}>期望交付日期</View>
                   <View style={CSS.infoItem}>{task.deadline}</View>
                 </View>
-              </View>
-              <View className='at-row at-row__justify--center'>
-                <View className='at-row'>
-                  <AtButton type='secondary' onClick={() => handleMap(task.p_send_location.name, task.d_destination.name)}>查看路线规划</AtButton>
+                <View className='at-row at-row__justify--between'>
+                  <Map longitude={Number(task.p_send_location.longitude)} latitude={Number(task.p_send_location.latitude)} markers={getMarkers(task)} scale={16} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
+                </View>
+                <View className='at-row at-row__justify--between'>
+                  <AtButton type='secondary' onClick={() => handleMap(task.p_send_location, task.d_destination)}>查看路线规划</AtButton>
                 </View>
               </View>
               <View style={CSS.detailsArea}>

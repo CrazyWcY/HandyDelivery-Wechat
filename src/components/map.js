@@ -45,7 +45,7 @@ class RouteMap {
 
   showRoutePlan() {
     wx.navigateTo({
-      url: 'plugin://routePlan/index?key=' + this.key + '&referer=' + this.referer + '&endPoint=' + this.endPoint
+      url: 'plugin://routePlan/index?key=' + this.key + '&referer=' + this.referer + '&startPoint=' + this.startPoint + '&endPoint=' + this.endPoint
     });
   }
 

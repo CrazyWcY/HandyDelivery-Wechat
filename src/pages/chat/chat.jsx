@@ -3,17 +3,17 @@ import Taro from '@tarojs/taro'
 import { ScrollView, View, Image, Text } from '@tarojs/components'
 import { AtAvatar, AtInput } from 'taro-ui'
 import './chat.scss'
-
+import { getCurrentInstance } from '@tarojs/taro'
 
 const Dialog = (props) => {
   const data = props.data
   const goToInfo = () => {
     Taro.navigateTo({
-      url: '/pages/personalInfo/personalInfo'
+      url: '/pages/personalInfo/personalInfo?id=' + data.id
     })
   }
-  return(
-    <View className={data.selfSend?"chat-i":"chat-i self"} >
+  return (
+    <View className={data.selfSend ? "chat-i" : "chat-i self"} >
       <View className="chat-l" onClick={goToInfo}>
         <AtAvatar circle size="small" image={data.avatar} onClick={goToInfo}></AtAvatar>
       </View>
@@ -30,78 +30,97 @@ const Dialog = (props) => {
   )
 }
 
+
+
 const Chat = () => {
-  let [data, setData] = useState({
-    list:[{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博真帅',
-      selfSend: false,
-    },{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博yyds',
-      selfSend: true,
-    },{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博真帅',
-      selfSend: false,
-    },{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博yyds',
-      selfSend: true,
-    },{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅',
-      selfSend: false,
-    },{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds',
-      selfSend: true,
-    },{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅',
-      selfSend: false,
-    },{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds',
-      selfSend: true,
-    },{
-      nickName: 'IST之光',
-      avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
-      value: '王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅',
-      selfSend: false,
-    },
-  ]
-  })
 
-  return(
+  useEffect(() => {
+    const id = getCurrentInstance().router.params.id
+    wx.request({
+      url: 'http://127.0.0.1:5000/getUserById?id=' + id,
+      method: 'get',
+      success: function (res) {
+        console.log(res)
+        setUser(res.data.data)
+
+        setData({
+          list: [
+            {
+              // nickName: 'IST之光',
+              // avatar: 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png,                                                    
+              value: '王博真帅',
+              selfSend: false,
+            }, {
+              value: '王博真帅',
+              selfSend: true,
+            }, {
+              value: '王博真帅',
+              selfSend: false,
+            }, {
+              value: '王博yyds',
+              selfSend: true,
+            }, {
+              value: '王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅',
+              selfSend: false,
+            }, {
+              value: '王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds',
+              selfSend: true,
+            }, {
+              value: '王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅',
+              selfSend: false,
+            }, {
+              value: '王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds王博yyds',
+              selfSend: true,
+            }, {
+              value: '王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅王博真帅',
+              selfSend: false,
+            }
+          ]
+        })
+      },
+
+      fail: function (res) {
+        console.log('error')
+      }
+    })
+  }, [])
+
+  const [user, setUser] = useState(null)
+  const [data, setData] = useState(null)
+
+  return (
     <View>
-      <ScrollView className="chat-scroll" scrollY>
-        <View className="chat-c">
-          {data.list.map(item=>
-          <Dialog data={item}/>)
-          }
-        </View>
-      </ScrollView>
+      {
+        data ?
+          <View>
+            <ScrollView className="chat-scroll" scrollY>
+              <View className="chat-c">
+                {data.list.map(item => {
+                  const messageItem = {
+                    id: item.selfSend ? user.id : 'root',
+                    nickName: item.selfSend ? user.name : 'WCY',
+                    avatar: item.selfSend ? user.avatar : 'http://ist.sjtu.edu.cn/getpic/20200907134805552_wangchongyu.png',
+                    value: item.value,
+                    selfSend: item.selfSend
+                  }
+                  return (<Dialog data={messageItem} />)
+                }
+                )
+                }
+              </View>
+            </ScrollView>
 
-      <View className="footer">
-        <View className="input-c">
-          <AtInput
-            name='value1'
-            type='text'
-            placeholder='单行文本'
-          // value={this.state.value1}
-          // onChange={this.handleChange.bind(this)}
-          />
-        </View>
-        {/* <View className="more-c">
+            <View className="footer">
+              <View className="input-c">
+                <AtInput
+                  name='value1'
+                  type='text'
+                  placeholder='单行文本'
+                // value={this.state.value1}
+                // onChange={this.handleChange.bind(this)}
+                />
+              </View>
+              {/* <View className="more-c">
           <View className="more-icon">
             {
               <View>
@@ -112,7 +131,9 @@ const Chat = () => {
             }
           </View>
         </View> */}
-      </View>
+            </View></View> : null
+      }
+
     </View >
   )
 }

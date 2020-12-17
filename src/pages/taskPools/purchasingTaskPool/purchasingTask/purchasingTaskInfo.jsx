@@ -1,4 +1,5 @@
-import { View, Text, ScrollView, Image } from '@tarojs/components'
+import { View, Text, ScrollView, Map, Image } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 import React, { useEffect, useState } from 'react'
 import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider } from "taro-ui"
 import { getCurrentInstance } from '@tarojs/taro'
@@ -94,9 +95,52 @@ const PurchasingTaskInfo = () => {
     })
   }, [])
 
-  const handleTabChange = v => {
-    setCurrent(v)
+  const goToUserInfo = id => {
+    Taro.navigateTo({
+      url: '/pages/personalInfo/personalInfo?id=' + id
+    })
   }
+
+  const getMarkers = task => {
+    const markers = [
+      {
+        id: 0,
+        longitude: task.p_destination.longitude,
+        latitude: task.p_destination.latitude,
+        width: 20,
+        height: 20,
+        label: {
+          content: '期望采购地点:' + task.p_destination.name,
+          color: '#22ac38',
+          fontSize: 14,
+          bgColor: "#fff",
+          borderRadius: 10,
+          borderColor: "#22ac38",
+          borderWidth: 1,
+          padding: 3
+        }
+      },
+      {
+        id: 1,
+        longitude: task.d_destination.longitude,
+        latitude: task.d_destination.latitude,
+        width: 20,
+        height: 20,
+        label: {
+          content: '取件地点:' + task.d_destination.name,
+          color: '#22ac38',
+          fontSize: 14,
+          bgColor: "#fff",
+          borderRadius: 10,
+          borderColor: "#22ac38",
+          borderWidth: 1,
+          padding: 3
+        }
+      },
+    ]
+    return markers
+  }
+
 
   return (
     <ScrollView>
@@ -104,7 +148,7 @@ const PurchasingTaskInfo = () => {
         task ? <View>
           <View style={CSS.head}>
             <View style={CSS.title} className='at-row at-row__justify--center'>{task.p_title}</View>
-            <View className='at-row at-row__justify--center'>
+            <View className='at-row at-row__justify--center' onClick={() => goToUserInfo(task.author.id)}>
               <View style={CSS.userBar} className='at-row'>
                 <View style={CSS.avatar} className='at-row'>
                   <AtAvatar circle image={task.author.avatar}></AtAvatar>
@@ -138,6 +182,9 @@ const PurchasingTaskInfo = () => {
                 <View style={CSS.infoTitle}>取件地址</View>
                 <View style={CSS.infoItem}>{task.d_destination.name}</View>
               </View>
+              <View className='at-row at-row__justify--between'>
+                <Map longitude={Number(task.p_destination.longitude)} latitude={Number(task.p_destination.latitude)} markers={getMarkers(task)} scale={16} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
+              </View>
             </View>
             <View style={CSS.detailsArea}>
               <View>{task.details}</View>
@@ -145,12 +192,12 @@ const PurchasingTaskInfo = () => {
             <View>
               {
                 task.good_pictures.map(item => (
-                <View style={CSS.imageLine}>
-                  <Image
-                    style='width: 320px; height: 180 px; background: #fff;'
-                    src={item}
-                  />
-                </View>
+                  <View style={CSS.imageLine}>
+                    <Image
+                      style='width: 320px; height: 180 px; background: #fff;'
+                      src={item}
+                    />
+                  </View>
                 ))
               }
             </View>
