@@ -705,7 +705,7 @@ const MyPostedItem = () => {
       method: 'get',
       success: function (res) {
         wx.showToast({
-          title: '支付成功',
+          title: '评价成功',
           icon: 'success',
           duration: 2000
         })

@@ -10,6 +10,7 @@ export default {
     'pages/myTasks/myPosted/myPostedItem',
     'pages/myTasks/myAccepted/delivery/myAcceptedDeliveryItem',
     'pages/myTasks/myAccepted/purchasing/myAcceptedPurchasingItem',
+    'pages/myTasks/myAccepted/purchasing/confirmPurchasing',
     'pages/test/test',
     'pages/message/message',
     "pages/personalInfo/personalInfo",

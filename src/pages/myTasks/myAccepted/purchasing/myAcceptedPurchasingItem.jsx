@@ -101,6 +101,12 @@ const MyAcceptedPurchasingItem = () => {
     })
   }
 
+  const handleConfirm = id => {
+    Taro.navigateTo({
+      url: '/pages/myTasks/myAccepted/purchasing/confirmPurchasing?id=' + id
+    })
+  }
+
   return (
     <ScrollView>
       {
@@ -164,7 +170,12 @@ const MyAcceptedPurchasingItem = () => {
                 <View style={CSS.timeLine}>发布于 {task.time}</View>
               </View>
             </View>
-            <AtButton type='primary'>确认完成采购</AtButton>
+            {
+              task.status > 1 ?
+                <AtButton type='primary' disabled>已完成采购，等待配送</AtButton>
+                :
+                <AtButton type='primary' onClick={() => handleConfirm(task.id)}>确认完成采购</AtButton>
+            }
           </View>
           : null
       }

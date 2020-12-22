@@ -1,7 +1,7 @@
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, ScrollView, Button } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider } from "taro-ui"
+import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtInputNumber } from "taro-ui"
 import { RouteMap } from '../../../../components/map'
 import { getCurrentInstance } from '@tarojs/taro'
 
@@ -75,6 +75,8 @@ const MyAcceptedDeliveryItem = () => {
   }
 
   const [task, setTask] = useState(0)
+  const [modalVisiable, setModalVisiable] = useState(false)
+  const [money, setMoney] = useState(0)
 
   useEffect(() => {
     const id = getCurrentInstance().router.params.id
@@ -111,6 +113,31 @@ const MyAcceptedDeliveryItem = () => {
   const goToUserInfo = id => {
     Taro.navigateTo({
       url: '/pages/personalInfo/personalInfo?id=' + id
+    })
+  }
+
+  const handleMoney = value => {
+    setMoney(value)
+  }
+
+  const handleFinish = () => {
+    wx.request({
+      url: 'http://127.0.0.1:5000/finishDeliveryTask?id=' + task.id + '&money=' + money,
+      method: 'get',
+      success: function (res) {
+        console.log(res)
+        wx.showToast({
+          title: '操作成功',
+          icon: 'success',
+          duration: 2000
+        })
+        setTimeout(() => {
+          wx.switchTab({ url: '/pages/myTasks/myTasks' })
+        }, 2000)
+      },
+      fail: function (res) {
+        console.log('error')
+      }
     })
   }
 
@@ -179,12 +206,28 @@ const MyAcceptedDeliveryItem = () => {
                 <View style={CSS.timeLine}>发布于 {task.time}</View>
               </View>
             </View>
+            {
+              task.status > 3 ?
+                <AtButton type='primary' disabled>已完成配送，等待发起人付款</AtButton>
+                :
+                <AtButton type='primary' onClick={() => setModalVisiable(true)}>确认完成配送</AtButton>
+            }
 
-            <AtButton type='primary'>确认完成配送</AtButton>
           </View>
           : null
 
       }
+      <AtModal isOpened={modalVisiable}>
+        <AtModalHeader>确认完成配送</AtModalHeader>
+        <AtModalContent>
+          <View>请输入实际配送金额</View>
+          <AtInputNumber min={0} max={999} step={1} value={money} onChange={handleMoney} />
+        </AtModalContent>
+        <AtModalAction> 
+          <Button>取消</Button> 
+          <Button onClick={handleFinish}>确定</Button> 
+        </AtModalAction>
+      </AtModal>
 
 
     </ScrollView>
