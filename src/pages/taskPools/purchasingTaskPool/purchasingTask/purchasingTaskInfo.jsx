@@ -141,6 +141,16 @@ const PurchasingTaskInfo = () => {
     return markers
   }
 
+  const receiveTask = (task) => {
+    if (task.author.id === 'root') {
+      wx.showToast({
+        title: '操作失败：不能接受自己发布的任务', //弹框内容
+        icon: 'none',  //弹框模式
+        duration: 3000    //弹框显示时间
+      })
+    }
+  }
+
 
   return (
     <ScrollView>
@@ -208,7 +218,7 @@ const PurchasingTaskInfo = () => {
             </View>
           </View>
 
-          <View style={{ position: 'fixed', bottom: '30px', left: '42%' }}>
+          <View style={{ position: 'fixed', bottom: '30px', left: '42%' }} onClick={() => receiveTask(task)}>
             <AtFab>
               <Text className='at-fab__icon at-icon at-icon-check'></Text>
             </AtFab>

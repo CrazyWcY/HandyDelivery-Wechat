@@ -1,8 +1,17 @@
 import { View, Text, ScrollView, Map, Image, Button } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
+import Taro from '@tarojs/taro'
 import { AtFab, AtTag, AtButton, AtAvatar, AtSegmentedControl, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtInput, AtRate } from "taro-ui"
 import { taskStatus } from '../../../service/status'
 import { getCurrentInstance } from '@tarojs/taro'
+import StarBar from '../../../components/StarBar'
+import Result from '../../../components/Result'
+
+const goToUserInfo = id => {
+  Taro.navigateTo({
+    url: '/pages/personalInfo/personalInfo?id=' + id
+  })
+}
 
 const UnreceivedInfo = (props) => {
 
@@ -126,9 +135,8 @@ const UnreceivedInfo = (props) => {
     <View>
       {
         task.status === 5 ?
-          <View>
-            <View>总体评价</View>
-            <AtRate value={Number(task.appraise)} />
+          <View style={{ marginLeft: '3%', marginRight: '3%' }}>
+            <StarBar star={Number(task.appraise)} type={'总体评价'} />
           </View> : null
       }
       <View style={CSS.infoCard}>
@@ -176,7 +184,7 @@ const UnreceivedInfo = (props) => {
       <View style={CSS.timeArea}>
         <View style={CSS.timeLine}>发布于 {task.time}</View>
       </View>
-      
+
     </View>
   )
 }
@@ -297,18 +305,18 @@ const PurchasingInfo = (props) => {
     <View>
       {
         task.status < 1 ?
-          <View>待接受，暂无配送信息。</View>
+          <Result icon='alert-circle' message='待接受，暂无采购信息。' />
           :
           <View>
             {
               task.status === 5 ?
-                <View>
-                  <View>评价</View>
-                  <AtRate value={Number(task.p_appraise)} />
-                </View> : null
+                <View style={{ marginLeft: '3%', marginRight: '3%' }}>
+                  <StarBar star={Number(task.p_appraise)} type={'采购者评价'} />
+                </View>
+                : null
             }
             <View className='at-row at-row__justify--center'>
-              <View style={CSS.userBar} className='at-row'>
+              <View style={CSS.userBar} onClick={() => goToUserInfo(task.puchaser.id)} className='at-row'>
                 <View style={CSS.avatar} className='at-row'>
                   <AtAvatar circle image={task.puchaser.avatar}></AtAvatar>
                   <View style={{ marginLeft: '5%' }}>
@@ -351,7 +359,7 @@ const PurchasingInfo = (props) => {
             <View style={CSS.timeArea}>
               <View style={CSS.timeLine}>发布于 {task.time}</View>
             </View>
-            
+
           </View>
       }
     </View>
@@ -365,48 +373,51 @@ const DeliveryInfo = (props) => {
   const [polyLines, setPolyLines] = useState(null)
   const [currLoc, setCurrLoc] = useState([{
     id: 0,
-    longitude: 121.513433,
-    latitude: 31.341287,
+    longitude: task.status < 2 ? 121.513646 : task.d_current_location.longitude,
+    latitude: task.status < 2 ? 31.341285 : task.d_current_location.latitude,
     width: 20,
     height: 20
   }])
 
   useEffect(() => {
-    const QQMapWX = require('../../../libs/qqmap-wx-jssdk')
-    const qqmapsdk = new QQMapWX({
-      key: 'R7GBZ-LTQAS-U43OX-6EAWB-2ZFUT-CYFAM'
-    })
-    qqmapsdk.direction({
-      from: '31.341285,121.513646',
-      to: '31.026339,121.437515',
-      success: function (res) {
-        console.log(res)
-        let coors = res.result.routes[0].polyline
-        for (let i = 2; i < coors.length; i++) {
-          coors[i] = coors[i - 2] + coors[i] / 1000000
-        }
-        console.log(coors)
-        let coors_new = []
-        for (let j = 0; j < coors.length; j++) {
-          coors_new.push({
-            longitude: parseFloat(coors[j + 1]),
-            latitude: parseFloat(coors[j]),
-          })
-          j++;
-        }
-        console.log(coors_new)
-        setPolyLines(
-          [
-            {
-              points: coors_new,
-              color: "#DC143C",
-              width: 3
-            }
-          ]
+    if (task.status >= 2) {
+      const QQMapWX = require('../../../libs/qqmap-wx-jssdk')
+      const qqmapsdk = new QQMapWX({
+        key: 'R7GBZ-LTQAS-U43OX-6EAWB-2ZFUT-CYFAM'
+      })
+      qqmapsdk.direction({
+        from: task.p_send_location.latitude + ',' + task.p_send_location.longitude,
+        to: task.d_destination.latitude + ',' + task.d_destination.longitude,
+        success: function (res) {
+          console.log(res)
+          let coors = res.result.routes[0].polyline
+          for (let i = 2; i < coors.length; i++) {
+            coors[i] = coors[i - 2] + coors[i] / 1000000
+          }
+          console.log(coors)
+          let coors_new = []
+          for (let j = 0; j < coors.length; j++) {
+            coors_new.push({
+              longitude: parseFloat(coors[j + 1]),
+              latitude: parseFloat(coors[j]),
+            })
+            j++;
+          }
+          console.log(coors_new)
+          setPolyLines(
+            [
+              {
+                points: coors_new,
+                color: "#DC143C",
+                width: 3
+              }
+            ]
 
-        )
-      }
-    })
+          )
+        }
+      })
+    }
+
   }, [])
 
   const CSS = {
@@ -494,18 +505,18 @@ const DeliveryInfo = (props) => {
     <View>
       {
         task.status < 2 ?
-          <View> 暂无配送信息</View>
+          <Result icon='alert-circle' message='待接受，暂无配送信息。' />
           :
           <View>
             {
               task.status === 5 ?
-                <View>
-                  <View>评价</View>
-                  <AtRate value={Number(task.d_appraise)} />
-                </View> : null
+                <View style={{ marginLeft: '3%', marginRight: '3%' }}>
+                  <StarBar star={Number(task.d_appraise)} type={'配送者评价'} />
+                </View>
+                : null
             }
             <View className='at-row at-row__justify--center'>
-              <View style={CSS.userBar} className='at-row'>
+              <View style={CSS.userBar} onClick={() => goToUserInfo(task.deliver.id)} className='at-row'>
                 <View style={CSS.avatar} className='at-row'>
                   <AtAvatar circle image={task.deliver.avatar}></AtAvatar>
                   <View style={{ marginLeft: '5%' }}>
@@ -531,7 +542,7 @@ const DeliveryInfo = (props) => {
               {
                 polyLines ?
                   <View className='at-row at-row__justify--between'>
-                    <Map longitude={121.513433} latitude={31.341287} scale={16} markers={currLoc} polyline={polyLines} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
+                    <Map longitude={currLoc[0].longitude} latitude={currLoc[0].latitude} scale={16} markers={currLoc} polyline={polyLines} style={{ marginLeft: 'auto', marginRight: 'auto' }} />
                   </View> : null
               }
               {

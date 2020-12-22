@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, Image, Map } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 import React, { useEffect, useState } from 'react'
 import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider } from "taro-ui"
 import { RouteMap } from '../../../../components/map'
@@ -97,6 +98,11 @@ const DeliveryTaskInfo = () => {
     })
   }, [])
 
+  const goToUserInfo = id => {
+    Taro.navigateTo({
+      url: '/pages/personalInfo/personalInfo?id=' + id
+    })
+  }
 
   const handleTabChange = v => {
     setCurrent(v)
@@ -155,7 +161,7 @@ const DeliveryTaskInfo = () => {
             <View style={CSS.head}>
               <View style={CSS.title} className='at-row at-row__justify--center'>{task.p_title}</View>
               <View className='at-row at-row__justify--center' style={{ paddingBottom: '3%' }}>
-                <View style={CSS.userBar} className='at-row'>
+                <View style={CSS.userBar} onClick={() => goToUserInfo(task.author.id)} className='at-row'>
                   <View style={CSS.avatar} className='at-row'>
                     <AtAvatar circle image={task.author.avatar}></AtAvatar>
                     <View style={{ marginLeft: '5%' }}>
@@ -164,7 +170,7 @@ const DeliveryTaskInfo = () => {
                     </View>
                   </View>
                 </View>
-                <View style={CSS.userBar} className='at-row'>
+                <View style={CSS.userBar} onClick={() => goToUserInfo(task.puchaser.id)} className='at-row'>
                   <View style={CSS.avatar} className='at-row'>
                     <AtAvatar circle image={task.puchaser.avatar}></AtAvatar>
                     <View style={{ marginLeft: '5%' }}>
