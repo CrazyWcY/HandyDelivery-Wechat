@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import DeliveryTask from './deliveryTask/deliveryTask'
 
@@ -22,6 +22,20 @@ const DeliveryTaskPool = () => {
       }
     })
   }, [])
+
+  useDidShow(() => {
+    wx.request({
+      url: 'http://127.0.0.1:5000/getDeliveryTasks',
+      method: 'get',
+      success: function(res) {
+        console.log(res)
+        setTasks(res.data.data)
+      },
+      fail: function(res) {
+        console.log('error')
+      }
+    })
+  })
 
   return (
     <View>

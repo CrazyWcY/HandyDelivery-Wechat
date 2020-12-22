@@ -144,9 +144,30 @@ const PurchasingTaskInfo = () => {
   const receiveTask = (task) => {
     if (task.author.id === 'root') {
       wx.showToast({
-        title: '操作失败：不能接受自己发布的任务', //弹框内容
-        icon: 'none',  //弹框模式
-        duration: 3000    //弹框显示时间
+        title: '操作失败：不能接受自己发布的任务',
+        icon: 'none',
+        duration: 3000
+      })
+      return
+    }
+    else {
+      wx.request({
+        url: 'http://127.0.0.1:5000/receivePurchasingTask?id=' + task.id + '&user=root',
+        method: 'get',
+        success: function(res) {
+          wx.showToast({
+            title: '操作成功',
+            icon: 'success', 
+            duration: 2000
+          })
+          console.log(res)
+          setTimeout(()=> {
+            wx.switchTab({url: '/pages/taskPools/taskPools'})
+          }, 2000)
+        },
+        fail: function(res) {
+          console.log('error')
+        }
       })
     }
   }

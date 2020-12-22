@@ -153,6 +153,38 @@ const DeliveryTaskInfo = () => {
     return markers
   }
 
+  const receiveTask = (task) => {
+    if (task.author.id === 'root' || task.puchaser.id === 'root') {
+      wx.showToast({
+        title: '操作失败：不能接受自己发布或采购的任务', //弹框内容
+        icon: 'none',  //弹框模式
+        duration: 3000    //弹框显示时间
+      })
+      return
+    }
+    else {
+      wx.request({
+        url: 'http://127.0.0.1:5000/receiveDeliveryTask?id=' + task.id + '&user=root',
+        method: 'get',
+        success: function(res) {
+          console.log(res)
+          wx.showToast({
+            title: '操作成功',
+            icon: 'success', 
+            duration: 2000
+          })
+          setTimeout(()=> {
+            wx.switchTab({url: '/pages/taskPools/taskPools'})
+          }, 2000)
+          
+        },
+        fail: function(res) {
+          console.log('error')
+        }
+      })
+    }
+  }
+
   return (
     <ScrollView>
       {
@@ -228,7 +260,7 @@ const DeliveryTaskInfo = () => {
               </View>
             </View>
 
-            <View style={{ position: 'fixed', bottom: '30px', left: '42%' }}>
+            <View style={{ position: 'fixed', bottom: '30px', left: '42%' }} onClick={() => receiveTask(task)}>
               <AtFab>
                 <Text className='at-fab__icon at-icon at-icon-check'></Text>
               </AtFab>

@@ -134,7 +134,7 @@ const UnreceivedInfo = (props) => {
   return (
     <View>
       {
-        task.status === 5 ?
+        task.status === 6 ?
           <View style={{ marginLeft: '3%', marginRight: '3%' }}>
             <StarBar star={Number(task.appraise)} type={'总体评价'} />
           </View> : null
@@ -309,7 +309,7 @@ const PurchasingInfo = (props) => {
           :
           <View>
             {
-              task.status === 5 ?
+              task.status === 6 ?
                 <View style={{ marginLeft: '3%', marginRight: '3%' }}>
                   <StarBar star={Number(task.p_appraise)} type={'采购者评价'} />
                 </View>
@@ -373,14 +373,14 @@ const DeliveryInfo = (props) => {
   const [polyLines, setPolyLines] = useState(null)
   const [currLoc, setCurrLoc] = useState([{
     id: 0,
-    longitude: task.status < 2 ? 121.513646 : task.d_current_location.longitude,
-    latitude: task.status < 2 ? 31.341285 : task.d_current_location.latitude,
+    longitude: task.status < 3 ? 121.513646 : task.d_current_location.longitude,
+    latitude: task.status < 3 ? 31.341285 : task.d_current_location.latitude,
     width: 20,
     height: 20
   }])
 
   useEffect(() => {
-    if (task.status >= 2) {
+    if (task.status >= 3) {
       const QQMapWX = require('../../../libs/qqmap-wx-jssdk')
       const qqmapsdk = new QQMapWX({
         key: 'R7GBZ-LTQAS-U43OX-6EAWB-2ZFUT-CYFAM'
@@ -504,12 +504,12 @@ const DeliveryInfo = (props) => {
   return (
     <View>
       {
-        task.status < 2 ?
+        task.status < 3 ?
           <Result icon='alert-circle' message='待接受，暂无配送信息。' />
           :
           <View>
             {
-              task.status === 5 ?
+              task.status === 6 ?
                 <View style={{ marginLeft: '3%', marginRight: '3%' }}>
                   <StarBar star={Number(task.d_appraise)} type={'配送者评价'} />
                 </View>
@@ -537,7 +537,7 @@ const DeliveryInfo = (props) => {
               </View>
               <View className='at-row at-row__justify--between' style={CSS.infoList}>
                 <View style={CSS.infoTitle}>配送状态</View>
-                <View style={CSS.infoItem}>{Number(task.status) < 3 ? '配送中' : '已收货'}</View>
+                <View style={CSS.infoItem}>{Number(task.status) < 4 ? '配送中' : '已收货'}</View>
               </View>
               {
                 polyLines ?
@@ -546,7 +546,7 @@ const DeliveryInfo = (props) => {
                   </View> : null
               }
               {
-                Number(task.status) < 3 ? <AtButton onClick={
+                Number(task.status) < 4 ? <AtButton onClick={
                   () => {
                     setCurrLoc([
                       {
@@ -572,6 +572,14 @@ const PayModalContent = (props) => {
 
   const task = props.task
 
+  const [password, setPassword] = useState('')
+
+  const handlePassword = value => {
+    setPassword(value)
+    props.changePassword(value)
+    return value
+  }
+
   return (
     <View>
       <View>采购金额：{task.p_money}元</View>
@@ -582,14 +590,14 @@ const PayModalContent = (props) => {
         title='支付密码'
         type='password'
         placeholder='请输入6位支付密码'
+        value={password}
+        onChange={handlePassword}
       />
     </View>
   )
 }
 
 const StarModalContent = (props) => {
-
-  const task = props.task
 
   const [star1, setStar1] = useState(0)
   const [star2, setStar2] = useState(0)
@@ -599,12 +607,12 @@ const StarModalContent = (props) => {
       <View>评价采购者：</View>
       <AtRate
         value={star1}
-        onChange={value => { setStar1(value) }}
+        onChange={value => { setStar1(value); props.changeStar([value, star2])}}
       />
       <View>评价配送者：</View>
       <AtRate
         value={star2}
-        onChange={value => { setStar2(value) }}
+        onChange={value => { setStar2(value); props.changeStar([star1, value])}}
       />
     </View>
   )
@@ -631,6 +639,8 @@ const MyPostedItem = () => {
   const [current, setCurrent] = useState(0)
   const [task, setTask] = useState(0)
   const [modalVisiable, setModalVisiable] = useState(false)
+  const [password, setPassword] = useState('')
+  const [star, setStar] = useState([0, 0])
 
   useEffect(() => {
     const id = getCurrentInstance().router.params.id
@@ -656,6 +666,62 @@ const MyPostedItem = () => {
     <PurchasingInfo task={task} />,
     <DeliveryInfo task={task} />
   ]
+
+  const confirmPayment = () => {
+    console.log('pwd:', password)
+    if (password === '111111') {
+      setModalVisiable(false)
+      wx.request({
+        url: 'http://127.0.0.1:5000/finishPayment?id=' + task.id,
+        method: 'get',
+        success: function (res) {
+          wx.showToast({
+            title: '支付成功',
+            icon: 'success',
+            duration: 2000
+          })
+          setTimeout(() => {
+            wx.switchTab({ url: '/pages/myTasks/myTasks' })
+          }, 2000)
+        },
+        fail: function (res) {
+          console.log('error')
+        }
+      })
+    }
+    else {
+      wx.showToast({
+        title: '支付失败：密码错误',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+  }
+
+  const confirmStar = () => {
+    console.log(star)
+    wx.request({
+      url: 'http://127.0.0.1:5000/finishStar?id=' + task.id + '&pstar=' + star[0] + '&dstar=' + star[1],
+      method: 'get',
+      success: function (res) {
+        wx.showToast({
+          title: '支付成功',
+          icon: 'success',
+          duration: 2000
+        })
+        setTimeout(() => {
+          wx.switchTab({ url: '/pages/myTasks/myTasks' })
+        }, 2000)
+      },
+      fail: function (res) {
+        console.log('error')
+      }
+    })
+
+
+
+    setModalVisiable(false)
+  }
 
   return (
     <ScrollView>
@@ -683,17 +749,17 @@ const MyPostedItem = () => {
               pages[current]
             }
             <AtModal isOpened={modalVisiable}>
-              <AtModalHeader>{Number(task.status) === 3 ? '支付' : '评价'}</AtModalHeader>
+              <AtModalHeader>{Number(task.status) === 4 ? '支付' : '评价'}</AtModalHeader>
               <AtModalContent>
                 {
-                  Number(task.status) === 3 ? <PayModalContent task={task} /> : <StarModalContent task={task} />
+                  Number(task.status) === 4 ? <PayModalContent task={task} changePassword={setPassword} /> : <StarModalContent task={task} changeStar={setStar} />
                 }
 
               </AtModalContent>
-              <AtModalAction> <Button onClick={() => setModalVisiable(false)}>取消</Button> <Button onClick={() => setModalVisiable(false)}>确定</Button> </AtModalAction>
+              <AtModalAction> <Button onClick={() => setModalVisiable(false)}>取消</Button> <Button onClick={Number(task.status) === 4 ? confirmPayment : confirmStar}>确定</Button> </AtModalAction>
             </AtModal>
             {
-              Number(task.status) === 3 ?
+              Number(task.status) === 4 ?
                 <View style={{ position: 'fixed', bottom: '30px', left: '42%' }} onClick={() => setModalVisiable(true)}>
                   <AtFab>
                     <Text className='at-fab__icon at-icon at-icon-credit-card'></Text>
@@ -701,7 +767,7 @@ const MyPostedItem = () => {
                 </View> : null
             }
             {
-              Number(task.status) === 4 ?
+              Number(task.status) === 5 ?
                 <View style={{ position: 'fixed', bottom: '30px', left: '42%' }} onClick={() => setModalVisiable(true)}>
                   <AtFab>
                     <Text className='at-fab__icon at-icon at-icon-star'></Text>
