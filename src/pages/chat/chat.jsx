@@ -104,16 +104,40 @@ const Chat = () => {
 
   const sendMessage = () => {
     if (message !== '') {
+      
       console.log(message)
-
-      let newDataList = JSON.parse(JSON.stringify(data))
-      newDataList.list.push({
-        value: message,
-        selfSend: false
+      console.log(user.id)
+      
+      wx.request({
+        url: SERVICE_URL + '/addChatMessage',
+        method: 'post',
+        header: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+          id: user.id,
+          message: message
+        },
+        success: function (res) {
+          wx.request({
+            url: SERVICE_URL + '/getChatListById?id=' + user.id,
+            method: 'get',
+            success: function (res) {
+              console.log(res)
+              setData({
+                list: res.data.data
+              })
+              setMessage('')
+            },
+            fail: function (res) {
+              console.log('error')
+            }
+          })
+        },
+        fail: function (res) {
+          console.log('error')
+        }
       })
-
-      setData(newDataList)
-      setMessage('')
     }
   }
 
@@ -126,7 +150,7 @@ const Chat = () => {
               <View className="chat-c">
                 {
                   data.list.map(item => {
-                    if(item.type === 'message') {
+                    if (item.type === 'message') {
                       const messageItem = {
                         id: item.selfSend ? user.id : 'root',
                         nickName: item.selfSend ? user.name : 'WCY',
@@ -147,7 +171,7 @@ const Chat = () => {
                       }
                       return (<ItemLink data={messageItem} />)
                     }
-                    
+
                   }
                   )
                 }
