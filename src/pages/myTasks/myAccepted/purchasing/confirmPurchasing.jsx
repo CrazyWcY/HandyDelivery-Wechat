@@ -4,7 +4,7 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Picker, Map, Text } from '@tarojs/components'
 import { AtButton, AtInputNumber, AtInput, AtList, AtListItem, AtTextarea, AtMessage, AtToast, AtImagePicker } from 'taro-ui'
 import { getCurrentInstance } from '@tarojs/taro'
-
+import SERVICE_URL from '../../../../service/service'
 
 const key = 'R7GBZ-LTQAS-U43OX-6EAWB-2ZFUT-CYFAM'
 
@@ -47,7 +47,7 @@ const ConfirmPurchasing = () => {
     const id = getCurrentInstance().router.params.id
     setCurrId(id)
     wx.request({
-      url: 'http://127.0.0.1:5000/getTask?id=' + id,
+      url: SERVICE_URL + '/getTask?id=' + id,
       method: 'get',
       success: function (res) {
         console.log(res)
@@ -94,7 +94,7 @@ const ConfirmPurchasing = () => {
 
     
     wx.request({
-      url: 'http://127.0.0.1:5000/finishPurchasingTask',
+      url: SERVICE_URL + '/finishPurchasingTask',
       method: 'post',
       header: {
         "Content-Type": "application/x-www-form-urlencoded"

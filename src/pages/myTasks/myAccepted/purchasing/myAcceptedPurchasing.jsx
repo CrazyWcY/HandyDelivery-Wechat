@@ -3,6 +3,7 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtList, AtListItem, AtButton, AtCard } from "taro-ui"
 import { MyAcceptedPurchasingTaskCard } from '../../../../components/TaskCard'
+import SERVICE_URL from '../../../../service/service'
 
 const MyAcceptedPurchasing = () => {
 
@@ -10,7 +11,7 @@ const MyAcceptedPurchasing = () => {
 
   useEffect(() => {
     wx.request({
-      url: 'http://127.0.0.1:5000/getAcceptedPurchasingTask?id=root',
+      url: SERVICE_URL + '/getAcceptedPurchasingTask?id=root',
       method: 'get',
       success: function(res) {
         console.log(res)
@@ -24,7 +25,7 @@ const MyAcceptedPurchasing = () => {
 
   useDidShow(() => {
     wx.request({
-      url: 'http://127.0.0.1:5000/getAcceptedPurchasingTask?id=root',
+      url: SERVICE_URL + '/getAcceptedPurchasingTask?id=root',
       method: 'get',
       success: function(res) {
         console.log(res)

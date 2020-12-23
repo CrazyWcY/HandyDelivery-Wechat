@@ -15,7 +15,7 @@ const PurchasingTaskPool = () => {
   
   useEffect(() => {
     wx.request({
-      url: 'http://127.0.0.1:5000/getPurchasingTasks',
+      url: SERVICE_URL + '/getPurchasingTasks',
       method: 'get',
       success: function(res) {
         console.log(res)
@@ -30,7 +30,7 @@ const PurchasingTaskPool = () => {
 
   useDidShow(() => {
     wx.request({
-      url: 'http://127.0.0.1:5000/getPurchasingTasks',
+      url: SERVICE_URL + '/getPurchasingTasks',
       method: 'get',
       success: function(res) {
         console.log(res)

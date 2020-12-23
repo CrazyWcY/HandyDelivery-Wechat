@@ -6,6 +6,7 @@ import { taskStatus } from '../../../service/status'
 import { getCurrentInstance } from '@tarojs/taro'
 import StarBar from '../../../components/StarBar'
 import Result from '../../../components/Result'
+import SERVICE_URL from '../../../service/service'
 
 const goToUserInfo = id => {
   Taro.navigateTo({
@@ -645,7 +646,7 @@ const MyPostedItem = () => {
   useEffect(() => {
     const id = getCurrentInstance().router.params.id
     wx.request({
-      url: 'http://127.0.0.1:5000/getTask?id=' + id,
+      url: SERVICE_URL + '/getTask?id=' + id,
       method: 'get',
       success: function (res) {
         console.log(res)
@@ -672,7 +673,7 @@ const MyPostedItem = () => {
     if (password === '111111') {
       setModalVisiable(false)
       wx.request({
-        url: 'http://127.0.0.1:5000/finishPayment?id=' + task.id,
+        url: SERVICE_URL + '/finishPayment?id=' + task.id,
         method: 'get',
         success: function (res) {
           wx.showToast({
@@ -701,7 +702,7 @@ const MyPostedItem = () => {
   const confirmStar = () => {
     console.log(star)
     wx.request({
-      url: 'http://127.0.0.1:5000/finishStar?id=' + task.id + '&pstar=' + star[0] + '&dstar=' + star[1],
+      url: SERVICE_URL + '/finishStar?id=' + task.id + '&pstar=' + star[0] + '&dstar=' + star[1],
       method: 'get',
       success: function (res) {
         wx.showToast({

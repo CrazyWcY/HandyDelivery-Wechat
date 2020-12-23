@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { AtAvatar, AtIcon } from 'taro-ui'
 import './personalInfo.scss'
 import { getCurrentInstance } from '@tarojs/taro'
+import SERVICE_URL from '../../service/service'
 
 const PersonalInfo = () => {
   let [user, setUser] = useState({
@@ -18,7 +19,7 @@ const PersonalInfo = () => {
   useEffect(() => {
     const id = getCurrentInstance().router.params.id
     wx.request({
-      url: 'http://127.0.0.1:5000/getUserById?id=' + id,
+      url: SERVICE_URL + '/getUserById?id=' + id,
       method: 'get',
       success: function (res) {
         console.log(res)

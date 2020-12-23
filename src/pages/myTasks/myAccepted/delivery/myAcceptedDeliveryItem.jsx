@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtInputNumber } from "taro-ui"
 import { RouteMap } from '../../../../components/map'
 import { getCurrentInstance } from '@tarojs/taro'
+import SERVICE_URL from '../../../../service/service'
 
 const MyAcceptedDeliveryItem = () => {
   const CSS = {
@@ -81,7 +82,7 @@ const MyAcceptedDeliveryItem = () => {
   useEffect(() => {
     const id = getCurrentInstance().router.params.id
     wx.request({
-      url: 'http://127.0.0.1:5000/getTask?id=' + id,
+      url: SERVICE_URL + '/getTask?id=' + id,
       method: 'get',
       success: function (res) {
         console.log(res)
@@ -122,7 +123,7 @@ const MyAcceptedDeliveryItem = () => {
 
   const handleFinish = () => {
     wx.request({
-      url: 'http://127.0.0.1:5000/finishDeliveryTask?id=' + task.id + '&money=' + money,
+      url: SERVICE_URL + '/finishDeliveryTask?id=' + task.id + '&money=' + money,
       method: 'get',
       success: function (res) {
         console.log(res)

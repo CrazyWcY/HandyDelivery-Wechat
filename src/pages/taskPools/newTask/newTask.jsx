@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 import Taro, { useDidShow } from '@tarojs/taro'
-import { View, Picker, Map, Text } from '@tarojs/components'
-import { AtButton, AtInputNumber, AtInput, AtList, AtListItem, AtTextarea, AtMessage, AtToast, AtImagePicker } from 'taro-ui'
+import { View, Picker, Button } from '@tarojs/components'
+import { AtButton, AtInputNumber, AtInput, AtList, AtListItem, AtTextarea, AtMessage, AtToast, AtImagePicker, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
+import SERVICE_URL from '../../../service/service'
+import ChooseFriend from './chooseFriend'
 
 const key = 'R7GBZ-LTQAS-U43OX-6EAWB-2ZFUT-CYFAM'
 
@@ -41,9 +43,12 @@ const NewTask = () => {
 
   const [currMap, setCurrMap] = useState(null) // 最近一次选择的地点项目：0-期望采购地点 1-取件地址
   const [toastVisiable, setToastVisiable] = useState(false)
+  const [modalVisiable, setModalVisiable] = useState(false) // 控制专项任务好友选择框
   const [imgFiles, setImgFiles] = useState([])
+  const [friend, setFriend] = useState(null) // 专项任务选择的好友信息
 
-  const handleSubmit = () => {
+
+  const handleSubmit = (special = false) => {
 
     const goBack = () => {
       setToastVisiable(false)
@@ -71,24 +76,30 @@ const NewTask = () => {
 
     console.log(formValue)
 
-    wx.request({
-      url: 'http://127.0.0.1:5000/createNewTask',
-      method: 'post',
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      data: {
-        data: JSON.stringify(formValue)
-      },
-      success: function (res) {
-        console.log(res)
-        setToastVisiable(true)
-        setTimeout(goBack, 3000)
-      },
-      fail: function (res) {
-        console.log('error')
-      }
-    })
+    if (special===true) {
+      console.log('special submit')
+      setModalVisiable(true)
+    }
+    else {
+      wx.request({
+        url: SERVICE_URL + '/createNewTask',
+        method: 'post',
+        header: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+          data: JSON.stringify(formValue)
+        },
+        success: function (res) {
+          console.log(res)
+          setToastVisiable(true)
+          setTimeout(goBack, 3000)
+        },
+        fail: function (res) {
+          console.log('error')
+        }
+      })
+    }
   }
 
   const handleChange = (e, attr) => {
@@ -134,6 +145,13 @@ const NewTask = () => {
     <View>
       <AtMessage />
       <AtToast isOpened={toastVisiable} text="发布成功" status='success'></AtToast>
+      <AtModal isOpened={modalVisiable}>
+        <AtModalHeader>选择好友</AtModalHeader>
+        <AtModalContent>
+          <ChooseFriend changeFriend={setFriend} formValue={formValue}></ChooseFriend>
+        </AtModalContent>
+        <AtModalAction> <Button onClick={() => { setModalVisiable(false) }}>取消</Button> </AtModalAction>
+      </AtModal>
       <AtInput
         name='title'
         title='任务标题'
@@ -212,7 +230,7 @@ const NewTask = () => {
         multiple={true}
       />
       <AtButton type='primary' onClick={handleSubmit}>发布</AtButton>
-      <AtButton onClick={handleSubmit}>发布专属任务</AtButton>
+      <AtButton onClick={() => handleSubmit(true)}>发布专属任务</AtButton>
     </View>
   )
 }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { AtFab, AtListItem, AtButton, AtCard, AtAvatar, AtDivider } from "taro-ui"
 import { getCurrentInstance } from '@tarojs/taro'
+import SERVICE_URL from '../../../../service/service'
 
 const MyAcceptedPurchasingItem = () => {
   const CSS = {
@@ -83,7 +84,7 @@ const MyAcceptedPurchasingItem = () => {
   useEffect(() => {
     const id = getCurrentInstance().router.params.id
     wx.request({
-      url: 'http://127.0.0.1:5000/getTask?id=' + id,
+      url: SERVICE_URL + '/getTask?id=' + id,
       method: 'get',
       success: function (res) {
         console.log(res)

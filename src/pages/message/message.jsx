@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import MessageCard from './messageCard/messageCard'
+import SERVICE_URL from '../../service/service'
 
 const messageList = new Array(10).fill(<MessageCard />)
 
@@ -11,7 +12,7 @@ const Message = () => {
 
   useEffect(() => {
     wx.request({
-      url: 'http://127.0.0.1:5000/getFriendsById?id=root',
+      url: SERVICE_URL + '/getFriendsById?id=root',
       method: 'get',
       success: function (res) {
         console.log(res)
