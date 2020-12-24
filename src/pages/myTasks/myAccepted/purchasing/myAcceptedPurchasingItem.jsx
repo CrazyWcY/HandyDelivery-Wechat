@@ -175,7 +175,9 @@ const MyAcceptedPurchasingItem = () => {
               task.status > 1 ?
                 <AtButton type='primary' disabled>已完成采购，等待配送</AtButton>
                 :
-                <AtButton type='primary' onClick={() => handleConfirm(task.id)}>确认完成采购</AtButton>
+                <View style={{width: '95%', margin: '0 auto'}}>
+                  <AtButton type='primary' onClick={() => handleConfirm(task.id)}>确认完成采购</AtButton>
+                </View>
             }
           </View>
           : null

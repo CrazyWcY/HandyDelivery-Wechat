@@ -59,7 +59,19 @@ const ConfirmPurchasing = () => {
     })
   }, [])
 
-
+  const CSS = {
+    moneyBox: {
+      height: '50px',
+      lineHeight: '50px',
+      marginLeft: '24rpx',
+    },
+    button: {
+      width: '95%',
+      margin: '0 auto',
+      marginBottom: '3%',
+      marginTop: '3%'
+    }
+  }
 
   const handleSubmit = () => {
 
@@ -92,7 +104,7 @@ const ConfirmPurchasing = () => {
 
     console.log(finalForm)
 
-    
+
     wx.request({
       url: SERVICE_URL + '/finishPurchasingTask',
       method: 'post',
@@ -204,15 +216,17 @@ const ConfirmPurchasing = () => {
               />
             </View>
 
-            <View>
+            <View style={CSS.moneyBox} className='at-row'>
               实际配送金额
-              <AtInputNumber
-                min={0}
-                max={5000}
-                step={1}
-                value={formValue.money}
-                onChange={value => { handleChange(value, 'money') }}
-              />
+              <View className='at-col' style={{ marginLeft: '5%' }}>
+                <AtInputNumber
+                  min={0}
+                  max={5000}
+                  step={1}
+                  value={formValue.money}
+                  onChange={value => { handleChange(value, 'money') }}
+                />
+              </View>
             </View>
 
             <AtTextarea
@@ -221,8 +235,9 @@ const ConfirmPurchasing = () => {
               maxLength={200}
               placeholder='输入具体描述'
             />
-
-            <AtButton type='primary' onClick={handleSubmit} >确认完成采购任务</AtButton>
+            <View style={CSS.button}>
+              <AtButton type='primary' onClick={handleSubmit} >确认完成采购任务</AtButton>
+            </View>
           </View> : null
       }
 

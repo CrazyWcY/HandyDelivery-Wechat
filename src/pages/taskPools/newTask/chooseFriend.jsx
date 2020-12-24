@@ -23,6 +23,17 @@ const ChooseFriend = (props) => {
   }, [])
 
   const handleSubmit = (friend) => {
+    const goBack = () => {
+      wx.switchTab({
+        url: '/pages/taskPools/taskPools',
+        success: function (e) {
+          var page = getCurrentPages().pop();
+          if (page == undefined || page == null) return;
+          page.onLoad();
+        }
+      })
+    }
+
     let newFormValue = JSON.parse(JSON.stringify(props.formValue))
     newFormValue.special_user = friend
     console.log(newFormValue)
@@ -37,6 +48,12 @@ const ChooseFriend = (props) => {
       },
       success: function (res) {
         console.log(res)
+        wx.showToast({
+          title: '发布成功',
+          icon: 'success',
+          duration: 2000
+        })
+        setTimeout(goBack, 2000)
       },
       fail: function (res) {
         console.log('error')

@@ -1,7 +1,7 @@
 import { Button, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import React, { useEffect, useState } from 'react'
-import { AtAvatar, AtIcon } from 'taro-ui'
+import { AtAvatar, AtIcon, AtButton } from 'taro-ui'
 import './personalInfo.scss'
 import { getCurrentInstance } from '@tarojs/taro'
 import SERVICE_URL from '../../service/service'
@@ -49,12 +49,13 @@ const PersonalInfo = () => {
           <View className="num">{user.receiveNum}</View>
           <text>发单</text>
           <View className="num">{user.sendNum}</View>
+          <text>累计星数</text>
+          <View className="num">{user.star}</View>
         </View>
       </View>
       <View className="lower">
         <View className="middle-box">
           <View className="title">
-            <View className='at-icon at-icon-user'></View>
             <View className="title-text">个性签名</View>
           </View>
           <View className="content">
@@ -64,8 +65,7 @@ const PersonalInfo = () => {
       </View>
 
       <View className="footer">
-        <View onClick={goToChat}>打招呼</View>
-        <View>+关注</View>
+        <AtButton disabled={true}> 已关注 </AtButton>
       </View>
     </View>
   )

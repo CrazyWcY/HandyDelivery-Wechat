@@ -33,6 +33,7 @@ const Dialog = (props) => {
 
 const ItemLink = (props) => {
   const data = props.data
+  console.log('got data', data)
   const goToInfo = () => {
     Taro.navigateTo({
       url: '/pages/personalInfo/personalInfo?id=' + data.id
@@ -56,7 +57,16 @@ const ItemLink = (props) => {
         <View className="chat-text" onClick={() => goToTask(data.itemId)}>
           <View className="chat-text-bg">
             {/* <Image src={telIcon} className="tel-img"></Image> */}
-            <Text>{data.value}</Text>
+            <Text style={{fontWeight: 'bold'}}>{data.value}</Text>
+            {
+              data.imgFiles.length > 0 ?
+                <Image
+                  style='width: 240px; height: 160px; background: #fff; margin-top: 3%'
+                  src={data.imgFiles[0]}
+                />
+                : null
+            }
+
           </View>
         </View>
       </View>
@@ -104,10 +114,10 @@ const Chat = () => {
 
   const sendMessage = () => {
     if (message !== '') {
-      
+
       console.log(message)
       console.log(user.id)
-      
+
       wx.request({
         url: SERVICE_URL + '/addChatMessage',
         method: 'post',
@@ -165,9 +175,10 @@ const Chat = () => {
                         id: item.selfSend ? user.id : 'root',
                         nickName: item.selfSend ? user.name : 'WCY',
                         avatar: item.selfSend ? user.avatar : 'https://www.gx8899.com/uploads/allimg/2016062815/yddciyonaq3.jpg',
-                        value: '这是一个专属任务链接, 任务id：' + item.taskId,
+                        value: '向你发送了一个专属任务，点击查看',
                         selfSend: item.selfSend,
-                        itemId: item.taskId
+                        itemId: item.taskId,
+                        imgFiles: item.imageFiles
                       }
                       return (<ItemLink data={messageItem} />)
                     }

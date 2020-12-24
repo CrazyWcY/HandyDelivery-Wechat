@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, Map, Image, Button } from '@tarojs/components'
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { AtFab, AtTag, AtButton, AtAvatar, AtSegmentedControl, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtInput, AtRate } from "taro-ui"
+import { AtFab, AtTag, AtButton, AtAvatar, AtSegmentedControl, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtInput, AtRate, AtDivider } from "taro-ui"
 import { taskStatus } from '../../../service/status'
 import { getCurrentInstance } from '@tarojs/taro'
 import StarBar from '../../../components/StarBar'
@@ -371,7 +371,7 @@ const DeliveryInfo = (props) => {
 
   const task = props.task
 
-  const [polyLines, setPolyLines] = useState(null)
+  const [polyLines, setPolyLines] = useState(null)  // polyLines[0].coors_new 记录所有经纬坐标点
   const [currLoc, setCurrLoc] = useState([{
     id: 0,
     longitude: task.status < 3 ? 121.513646 : task.d_current_location.longitude,
@@ -413,8 +413,23 @@ const DeliveryInfo = (props) => {
                 width: 3
               }
             ]
-
           )
+          let count = 0
+          const timer = setInterval(() => {
+            setCurrLoc([
+              {
+                id: 0,
+                latitude: coors_new[count].latitude,
+                longitude: coors_new[count].longitude,
+                width: 10,
+                height: 10
+              }
+            ])
+            count++
+            if (count > coors_new.length) {
+              return () => clearInterval(timer)
+            }
+          }, 100)
         }
       })
     }
@@ -581,16 +596,24 @@ const PayModalContent = (props) => {
     return value
   }
 
+  const CSS = {
+    itemLine: {
+      fontSize: '15px',
+      marginBottom: '3%'
+    }
+  }
+
   return (
     <View>
-      <View>采购金额：{task.p_money}元</View>
-      <View>配送金额：{task.d_money}元</View>
-      <View>总计：{Number(task.p_money) + Number(task.d_money)}元</View>
+      <View style={CSS.itemLine}>采购金额：{task.p_money}元</View>
+      <View style={CSS.itemLine}>配送金额：{task.d_money}元</View>
+      <View style={CSS.itemLine}>总计：{Number(task.p_money) + Number(task.d_money)}元</View>
+      <AtDivider></AtDivider>
       <AtInput
         name='password'
         title='支付密码'
         type='password'
-        placeholder='请输入6位支付密码'
+        placeholder='输入支付密码'
         value={password}
         onChange={handlePassword}
       />
@@ -603,18 +626,29 @@ const StarModalContent = (props) => {
   const [star1, setStar1] = useState(0)
   const [star2, setStar2] = useState(0)
 
+  const CSS = {
+    itemList: {
+      fontSize: '15px',
+      marginTop: '3%',
+      marginBottom: '3%'
+    }
+  }
   return (
     <View>
-      <View>评价采购者：</View>
-      <AtRate
-        value={star1}
-        onChange={value => { setStar1(value); props.changeStar([value, star2])}}
-      />
-      <View>评价配送者：</View>
-      <AtRate
-        value={star2}
-        onChange={value => { setStar2(value); props.changeStar([star1, value])}}
-      />
+      <View style={CSS.itemList}>评价采购者：</View>
+      <View>
+        <AtRate
+          value={star1}
+          onChange={value => { setStar1(value); props.changeStar([value, star2]) }}
+        />
+      </View>
+      <View style={CSS.itemList}>评价配送者：</View>
+      <View>
+        <AtRate
+          value={star2}
+          onChange={value => { setStar2(value); props.changeStar([star1, value]) }}
+        />
+      </View>
     </View>
   )
 }

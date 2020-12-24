@@ -211,7 +211,9 @@ const MyAcceptedDeliveryItem = () => {
               task.status > 3 ?
                 <AtButton type='primary' disabled>已完成配送，等待发起人付款</AtButton>
                 :
-                <AtButton type='primary' onClick={() => setModalVisiable(true)}>确认完成配送</AtButton>
+                <View style={{ width: '95%', margin: '0 auto' }}>
+                  <AtButton type='primary' onClick={() => setModalVisiable(true)}>确认完成配送</AtButton>
+                </View>
             }
 
           </View>
@@ -224,9 +226,9 @@ const MyAcceptedDeliveryItem = () => {
           <View>请输入实际配送金额</View>
           <AtInputNumber min={0} max={999} step={1} value={money} onChange={handleMoney} />
         </AtModalContent>
-        <AtModalAction> 
-          <Button>取消</Button> 
-          <Button onClick={handleFinish}>确定</Button> 
+        <AtModalAction>
+          <Button>取消</Button>
+          <Button onClick={handleFinish}>确定</Button>
         </AtModalAction>
       </AtModal>
 

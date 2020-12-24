@@ -41,8 +41,8 @@ const MyInfo = () => {
       paddingRight: '3%'
     },
     details: {
-      width: '95%',
-      margin: '0 auto',
+      // width: '95%',
+      // margin: '0 auto',
       borderRadius: '5px'
     },
     buttons: {
@@ -67,6 +67,13 @@ const MyInfo = () => {
       fail: function (res) {
         console.log('error')
       }
+    })
+  }
+
+  const TBD = () => {
+    wx.showToast({
+      title: 'beta版本暂未上线',
+      duration: 2000
     })
   }
 
@@ -139,7 +146,7 @@ const MyInfo = () => {
 
 
       <View style={CSS.buttons}>
-        <AtButton type='primary'>修改个人信息</AtButton>
+        <AtButton type='primary' onClick={TBD}>修改个人信息</AtButton>
         <AtDivider></AtDivider>
       </View>
 
@@ -148,11 +155,12 @@ const MyInfo = () => {
           title='关于'
           arrow='right'
           iconInfo={{ size: 25, color: '#78A4FA', value: 'link', }}
+          onClick={TBD}
         />
         <AtListItem
           title='重置数据'
           note='beta管理员操作'
-          iconInfo={{ size: 25, color: '#78A4FA', value: 'reload', }}
+          iconInfo={{ size: 25, color: '#FF0000', value: 'reload', }}
           onClick={reset}
         />
       </AtList>
