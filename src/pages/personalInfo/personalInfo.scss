@@ -5,7 +5,7 @@
   align-items: center;
   flex-direction: column;
   height: 400px;
-  background-image: url(http://www.nxszfk.com/img/446tryb/3371.jpg);;
+  background-image: url(https://pic.shejiben.com/caizhi/day_151020/20151020_3f25db0ffd09aeee4dedSv6hw8gs3Z7V.jpg);
 }
 
 .avatar{
@@ -35,6 +35,13 @@
   height: 200px;
   background-color: #FFFFFF;
 }
+
+.task-box{
+    margin: 20px 0px 20px 0px;
+    padding: 0px 20px 0px 20px;
+    height: 500px;
+    background-color: #FFFFFF;
+  }
 
 .lower{
   background-color: #F6F7F9;
@@ -66,4 +73,9 @@
   bottom: 0;
   left: 0;
   right: 0;
+  margin-bottom: 3%;
+}
+
+.task-area {
+    margin: 2%
 }

@@ -217,7 +217,7 @@ const ConfirmPurchasing = () => {
             </View>
 
             <View style={CSS.moneyBox} className='at-row'>
-              实际配送金额
+              实际采购金额
               <View className='at-col' style={{ marginLeft: '5%' }}>
                 <AtInputNumber
                   min={0}
@@ -236,7 +236,10 @@ const ConfirmPurchasing = () => {
               placeholder='输入具体描述'
             />
             <View style={CSS.button}>
-              <AtButton type='primary' onClick={handleSubmit} >确认完成采购任务</AtButton>
+              <AtButton type='primary' onClick={handleSubmit} >完成并发布</AtButton>
+            </View>
+            <View style={CSS.button}>
+              <AtButton onClick={handleSubmit} >完成并自行配送</AtButton>
             </View>
           </View> : null
       }
