@@ -96,15 +96,15 @@ const MyAcceptedDeliveryItem = () => {
 
   const handleMap = () => {
     const start = {
-      name: '上海交通大学（闵行校区）',
-      latitude: '31.031863',
-      longitude: '121.443219'
+      name: '上海科技大学',
+      latitude: '31.182971',
+      longitude: '121.601394'
     }
 
     const end = {
-      name: '复旦大学（江湾新校区）',
-      latitude: '31.341285',
-      longitude: '121.513646'
+      name: '上海交通大学闵行校区',
+      latitude: '31.0176',
+      longitude: '121.43102'
     }
 
     const MAP = new RouteMap(start, end)

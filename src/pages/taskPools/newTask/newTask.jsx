@@ -122,6 +122,7 @@ const NewTask = () => {
     const handleChange = (e, attr) => {
         let newFormValue = JSON.parse(JSON.stringify(formValue))
         newFormValue[attr] = e
+        console.log('time:', newFormValue[attr])
         setFormValue(newFormValue)
         return e
     }
@@ -173,6 +174,16 @@ const NewTask = () => {
             duration: 2000
         })
         return
+    }
+
+    const handleChooseImage = (files) => {
+        for(let file of files) {
+            file.file.path = SERVICE_URL + '/static/2.jpg'
+            file.url = SERVICE_URL + '/static/2.jpg'
+        }
+        console.log('files', files)
+        setImgFiles(files); 
+        handleChange(files, 'imgFiles')
     }
 
     return (
@@ -239,7 +250,7 @@ const NewTask = () => {
                     required={true}
                 />
             </View>
-            <Picker mode='date' onChange={value => handleChange(value.detail.value, 'deadLine')}>
+            <Picker mode='date' onChange={value => handleChange(value.detail.value + ' 00:00:00', 'deadLine')}>
                 <AtList>
                     <AtListItem title='期望交付日期' extraText={formValue.deadLine} />
                 </AtList>
@@ -266,7 +277,7 @@ const NewTask = () => {
             />
             <AtImagePicker
                 files={imgFiles}
-                onChange={files => { setImgFiles(files); handleChange(files, 'imgFiles') }}
+                onChange={files => handleChooseImage(files)}
                 count={3}
                 length={3}
                 multiple={true}
