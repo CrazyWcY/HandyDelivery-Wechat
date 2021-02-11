@@ -1,5 +1,7 @@
 ## HandyDelivery-微信小程序端
 
+2020秋EI6702 大作业移动端，基于Taro框架。
+
 ### 安装依赖
 
 ```shell
